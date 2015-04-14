@@ -1,7 +1,7 @@
 # kpc-toolbox
 KPC-Toolbox: MATLAB toolbox to fit Markovian Arrival Processes
 
-Current version: 3.1
+Current version: 0.3.1
 
 This software is released under the MIT license, see LICENSE.TXT.
 Inside MATLAB, use the command 'help Contents.m' to list the available commands. 
