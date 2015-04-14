@@ -6,7 +6,6 @@ Current version: 0.3.2
 Website: http://www.cs.wm.edu/MAPQN/kpctoolbox.html
 
 This software is released under the MIT license, see LICENSE.TXT.
-Inside MATLAB, use the command 'help Contents.m' to list the available commands. 
 
 If you are using the KPC-Toolbox for scientific papers and reports, please consider citing the following publications:
 
