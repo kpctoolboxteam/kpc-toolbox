@@ -7,7 +7,7 @@ Website: http://www.cs.wm.edu/MAPQN/kpctoolbox.html
 
 This software is released under the MIT license, see LICENSE.TXT.
 
-If you are using the KPC-Toolbox for scientific papers and reports, please consider citing the following publications:
+If you are using the KPC-Toolbox for scientific papers or technical reports, please consider citing the following publications:
 
 [1] G.Casale, E.Z.Zhang, E.Smirni. 
 KPC-Toolbox: Best Recipes for Automatic Trace Fitting Using Markovian Arrival Processes 
