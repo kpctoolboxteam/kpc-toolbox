@@ -1,4 +1,4 @@
-# kpc-toolbox
+# KPC-Toolbox
 KPC-Toolbox: MATLAB toolbox to fit Markovian Arrival Processes
 
 Current version: 0.3.2
@@ -22,16 +22,16 @@ Elsevier Performance Evaluation, 67(2):61-79, Feb 2010.
 
 Add all directories to the MATLAB classpath, for example using the command:
 
- addpath(genpath('MY_INSTALLATION_PATH/kpc-toolbox')) 
+**addpath(genpath('MY_INSTALLATION_PATH/kpc-toolbox'))** 
 
 A demonstrator of the tool can be run using the command
 
- demo_run 
+**demo_run** 
 
 To get help for the Markovian arrival process fitting tool, type
 
- help kpcfit_auto 
+**help kpcfit_auto** 
 
 For the phase-type distribution fitting tool, type
 
- help kpcfit_ph_auto
+**help kpcfit_ph_auto**
