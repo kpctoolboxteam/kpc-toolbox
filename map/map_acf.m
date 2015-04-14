@@ -18,8 +18,7 @@ function ACFCOEFFS=map_acf(MAP,LAGS)
 %  - map_acf(MAP,logspace(0,4,5)) returns five logarithmically spaced
 %  autocorrelation coefficients in [1e0,1e4]
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 
 if nargin==1
     LAGS=1;

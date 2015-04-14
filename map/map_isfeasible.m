@@ -11,8 +11,7 @@ function ISFEAS=map_isfeasible(MAP)
 %  Examples:
 %  - map_isfeasible({[0,0;0,0],[1,2;3,4]}) is an infeasible MAP
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 ISFEAS=0;
 if nargin==2
     ISFEAS=map_checkfeasible(MAP,TOL);

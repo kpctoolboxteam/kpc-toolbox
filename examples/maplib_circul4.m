@@ -5,8 +5,7 @@ function MAP=maplib_circul4()
 %  Output:
 %  MAP: pre-fitted MAP process
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 D0=[-1.969053238281377                   0                   0                   0
     0 -11.693745881208926                   0                   0
     0                   0  -3.809781645410352                   0

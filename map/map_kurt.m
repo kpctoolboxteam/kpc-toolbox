@@ -8,8 +8,6 @@ function KURT=map_kurt(MAP)
 %  KURT: kurtosis of the interarrrival times
 %
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
 
 for i=1:4
     m(i)=map_moment(MAP,i);

@@ -7,8 +7,7 @@ function SKEWNESS=map_skew(MAP)
 %  Output:
 %  SKEWNESS: skewness of inter-arrival times
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 for i=1:3
     m(i)=map_moment(MAP,i);
 end

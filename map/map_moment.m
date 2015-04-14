@@ -13,8 +13,7 @@ function MOMENTS=map_moment(MAP,ORDERS)
 %  - map_moment(MAP,1:2) return the first two power moments E[X], E[X^2]
 %  - map_moment(MAP,2) return the second power moment E[X^2]
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 D0=MAP{1};
 D1=MAP{2};
 MOMENTS=[];

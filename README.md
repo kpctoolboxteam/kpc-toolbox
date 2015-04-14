@@ -18,17 +18,20 @@ Elsevier Performance Evaluation, 67(9):873-896, Sep 2010.
 Trace Data Characterization and Fitting for Markov Modeling
 Elsevier Performance Evaluation, 67(2):61-79, Feb 2010.
 
-GETTING STARTED
+**GETTING STARTED**
 
-Include all directories to the MATLAB classpath, for example using the command:
+Add all directories to the MATLAB classpath, for example using the command:
+
  addpath(genpath('MY_INSTALLATION_PATH/kpc-toolbox')) 
 
 A demonstrator of the tool can be run using the command
+
  demo_run 
 
-Help and examples on fitting tool can be accessed by typing
+To get help for the Markovian arrival process fitting tool, type
+
  help kpcfit_auto 
 
-for the Markovian arrival process fitting tool and
+For the phase-type distribution fitting tool, type
+
  help kpcfit_ph_auto
-for the phase-type distribution fitting tool. 

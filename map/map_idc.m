@@ -17,8 +17,7 @@ function I=map_idc(MAP)
 %  Examples:
 %  - I=map_idc(map_renewal(MAP)) equals the SCV of the MAP
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 
 e=ones(size(MAP{1},1),1);
 I=1+2*(map_lambda(MAP)-map_pie(MAP)*inv(map_infgen(MAP)+e*map_prob(MAP))*MAP{2}*e);

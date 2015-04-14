@@ -12,7 +12,6 @@ function P=map_embedded(MAP)
 %  - P=map_embedded(MAP) gives the probabilities P(i,j) that the MAP
 %  restarts in phase j if the last absorption occurred in phase i
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 P=inv(-MAP{1})*MAP{2};
 end

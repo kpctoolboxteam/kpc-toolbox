@@ -17,8 +17,7 @@ function MAP=map_mmpp2(MEAN,SCV,SKEW,ACF1)
 %  - MAP=map_mmpp2(1,2,-1,-1) MMPP(2) process with minimal skewness and
 %  maximal autocorrelation
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 E1=MEAN;
 E2=(1+SCV)*E1^2;
 E3=-(2*E1^3-3*E1*E2-SKEW*(E2-E1^2)^(3/2));

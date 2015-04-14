@@ -9,7 +9,6 @@ function PIQ=map_prob(MAP)
 %  PIQ: equilibrium distribution of the continuous-time Markov chain
 %  Q=D0+D1
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 PIQ=ctmc_solve(map_infgen(MAP)); 
 end

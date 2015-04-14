@@ -11,8 +11,7 @@ function [PROB,Q]=ctmc_solve(Q,options)
 %  Examples:
 %  - ctmc_solve([-0.5,0.5;0.2,-0.2])
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 if length(Q) > 6000
     warning('the order of Q is greater than 6000, i.e., %d elements. Press key to continue.',length(Q));
     pause;

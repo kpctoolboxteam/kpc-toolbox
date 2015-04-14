@@ -11,8 +11,7 @@ function MAP=map_erlang(MEAN,k)
 %  Examples:
 %  - MAP=map_erlang(2,3) an Erlang-3 process with mean 2
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 mu=k/MEAN;
 
 MAP={zeros(k),zeros(k)};

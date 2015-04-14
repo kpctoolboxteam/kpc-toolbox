@@ -22,10 +22,8 @@ function [PH] = kpcfit_ph_auto(E,options)
 % [PH]=kpcfit_ph_auto(E,options) 
 % kpcfit_ph_summary
 % i=1; [alpha,T]=map2ph(PH{i,1}) % (alpha,T) distribution of i-th fitted PH
-%
-% version: 0.3.0
 
-fprintf('kpcfit_ph: version 0.3.0\n')
+fprintf('kpcfit_ph: version %s\n',kpcfit_version())
 fprintf('kpcfit_ph: type "help kpcfit_ph_options" for options\n')
 
 %% initialization

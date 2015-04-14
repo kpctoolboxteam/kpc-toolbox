@@ -11,7 +11,6 @@ function PROB=dtmc_solve(P)
 %  Examples:
 %  - dtmc_solve([0.5,0.5;0.2,0.8])
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 PROB=ctmc_solve(P-eye(size(P)));
 end

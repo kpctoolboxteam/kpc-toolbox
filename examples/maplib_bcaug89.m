@@ -10,8 +10,6 @@ function MAP=maplib_bcaug89()
 %     Department of Computer Science, College of William and Mary, Tech. Rep. WM-CS-2008-02. Available at:
 %     http://www.wm.edu/computerscience/techreport/2008/WM-CS-2008-02.pdf
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
 
 D0=diag([ -1.081448703958653
   -0.226850164937913

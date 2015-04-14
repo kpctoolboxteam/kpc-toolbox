@@ -5,8 +5,7 @@ function MAP=maplib_saw()
 %  Output:
 %  MAP: pre-fitted MAP process
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 D0=[-1     0
      0    -2];
 D1=[ 0     1

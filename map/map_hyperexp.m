@@ -17,8 +17,7 @@ function MAP=map_hyperexp(MEAN,SCV,p)
 %  - map_isfeasible(map_hyperexp(1,25,0.5)) a two-phase Hyperexponential 
 %    with SCV=25 and p=0.5 does not exist
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 if nargin<3
     p=0.99;
 end

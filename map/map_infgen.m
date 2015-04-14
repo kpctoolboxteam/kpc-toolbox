@@ -9,6 +9,5 @@ function Q=map_infgen(MAP)
 %  Output: 
 %  Q: infinitesimal generator (=D0+D1)
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 Q=MAP{1}+MAP{2};

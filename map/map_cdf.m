@@ -13,9 +13,7 @@ function CDFVALS=map_cdf(MAP,POINTS)
 %  Examples:
 %  - map_cdf(MAP,1) returns Pr[T<=1], being T an interarrival time
 %  - map_cdf(MAP,[1,5]) returns [Pr[T<=1], Pr[T<=5]]
-%
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 CDFVALS=[];
 p=map_prob(MAP);
 A=p*MAP{2};

@@ -39,8 +39,6 @@ function [MAP,fac,fbc,kpcMAPs]=kpcfit_auto(trace, varargin)
 %     Fitting Using Markovian Arrival Processes. in Proc. of QEST 2008, 
 %     83-92, St.Malo, France, IEEE Press, September 2008. 
 %
-%
-% Revision: 0.3 (June 2011)
 
 %% options
 OptionNames = [

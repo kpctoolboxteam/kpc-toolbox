@@ -8,8 +8,7 @@ function MAPOUT=map_renewal(MAPIN)
 %  MAPOUT: renewal MAP process with same cdf as MAPIN, but no
 %  correlations between inter-arrival times
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 MAPOUT=MAPIN;
 MAPOUT{2}=MAPIN{2}*ones((length(MAPIN{2})),1)*map_pie(MAPIN);
 end

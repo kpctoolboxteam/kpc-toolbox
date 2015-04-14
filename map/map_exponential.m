@@ -10,8 +10,7 @@ function MAP=map_exponential(MEAN)
 %  Examples:
 %  - MAP=map_exponential(2) return a Poisson process with rate lambda=0.5
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 if iscell(MEAN)
     MAP=map_exponential(map_mean(MEAN));
     return

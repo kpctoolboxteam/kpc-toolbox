@@ -6,7 +6,6 @@ function MAP=maplib_hmap4()
 %  Output:
 %  MAP: pre-fitted MAP process
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 MAP=map_mmpp2(1,4,-1,0.1);
 end

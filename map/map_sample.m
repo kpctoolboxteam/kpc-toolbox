@@ -24,10 +24,7 @@ function [SAMPLES,LAST,FIRST]=map_sample(MAP,nSamples,pi,seed)
 %  * WARNING: the script can  be memory consuming and quite slow for
 %  samples sizes greater than N=10000 *
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
-%
-% REV: 23-Jul-2008, added SEED parameter
+
 if size(MAP{1})==1
     SAMPLES=exprnd(map_mean(MAP),nSamples,1);
     LAST=SAMPLES*0+1;

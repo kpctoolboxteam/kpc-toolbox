@@ -12,8 +12,7 @@ function MAP=map_normalize(MAP)
 %  Examples:
 %  - map_normalize({[0,0;0,0],[1,2;3,4]}) produces a valid MAP
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 for i=1:size(MAP{1},1)
     for j=1:size(MAP{1},1)
         MAP{1}(i,j)=real(MAP{1}(i,j));

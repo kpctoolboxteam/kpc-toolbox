@@ -7,7 +7,6 @@ function VAR=map_var(MAP)
 %  Output:
 %  VAR: variance of inter-arrival times
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 VAR=map_moment(MAP,2)-map_mean(MAP)^2;
 end

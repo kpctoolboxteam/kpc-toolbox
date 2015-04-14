@@ -7,7 +7,6 @@ function MEAN=map_mean(MAP)
 %  Output:
 %  MEAN: mean inter-arrival time
 %
-% MAP Queueing Networks Toolbox
-% Version 1.0 	 15-Apr-2008
+
 MEAN=map_moment(MAP,1);
 end
