@@ -1,0 +1,6 @@
+0.3.1 - Aug 2014 - some bug fixing in kpc_ph_options and kpc_ph_search
+0.3.0 - Jun 2011 - major revision of kpcfit_ph, added exact, parameter space moment fitting, and aph. added demo and tests folders. 
+
+0.2.4 - Aug 2010 - fixed a bug in kpcfit_sub_bic when regression was called on a single point
+
+0.2.3 - Jun 2010 - fixed several bugs
