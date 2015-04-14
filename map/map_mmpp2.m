@@ -23,7 +23,7 @@ E1=MEAN;
 E2=(1+SCV)*E1^2;
 E3=-(2*E1^3-3*E1*E2-SKEW*(E2-E1^2)^(3/2));
 if ACF1==-1
-    G2=1-10*10^(-mapqntbx_feastol); % autocorrelation decay rate
+    G2=1-10*10^(-map_feastol); % autocorrelation decay rate
 else
     G2=ACF1/(1-1/SCV)/0.5; % autocorrelation decay rate
 end

@@ -6,18 +6,6 @@ fprintf('Press any key to continue...\n')
 pause
 demo_kpcfit_ph_dec_pkt_1_udp
 
-%clear
-%fprintf('DEMO KPC-PH - low variability / light-tail\n')
-%fprintf('Press any key to continue...\n')
-%pause
-%demo_kpcfit_ph_livemaps
-
-clear
-fprintf('DEMO KPC-PH - high-variability / heavy-tail\n')
-fprintf('Press any key to continue...\n')
-pause
-demo_kpcfit_ph_radius
-
 clear
 fprintf('DEMO KPC - lrd fit animation\n')
 fprintf('Press any key to continue...\n')

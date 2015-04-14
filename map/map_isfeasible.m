@@ -6,7 +6,7 @@ function ISFEAS=map_isfeasible(MAP)
 %
 %  Output:
 %  ISFEAS: boolean 1=feasible, 0=infeasible. Numerical tolerance is based
-%  on the standard toolbox value in mapqntbx_feastol.m
+%  on the standard toolbox value in map_feastol.m
 %
 %  Examples:
 %  - map_isfeasible({[0,0;0,0],[1,2;3,4]}) is an infeasible MAP
@@ -22,7 +22,7 @@ elseif nargin==1
         check=map_checkfeasible(MAP,10^-k);
         if check
             ISFEAS=k;
-            ISFEAS=ISFEAS>mapqntbx_feastol;
+            ISFEAS=ISFEAS>map_feastol;
             return
         end
     end
@@ -92,7 +92,7 @@ if isfeas==0
     return;
 end
 %% validate irreducibility
-if n<mapqntbx_largemap % compute eigenvalues only if the MAP is not too large
+if n<map_largemap % compute eigenvalues only if the MAP is not too large
     eigQ=eig(Q);
     if length(find(eigQ>0-TOL))>1
         isfeas=0;
