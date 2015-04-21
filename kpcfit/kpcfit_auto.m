@@ -1,22 +1,22 @@
 function [MAP,fac,fbc,kpcMAPs]=kpcfit_auto(trace, varargin)
-% [MAP,fac,fbc,kpcMAPs] = kpcfit_auto(trace,'option1',val1,'option2',val2,...)
+% [MAP,fac,fbc,kpcMAPs] = kpcfit_auto(T,'option1',val1,'option2',val2,...)
 %
 % DESCRIPTION
-% Automatic fitting of trace into a Markovian Arrival Process based on
+% Automatic fitting of trace T into a Markovian Arrival Process based on
 % the Kronecker Product Composition (KPC) method.
 %
 % INPUT
-% trace        - data structure returned by kpcfit_init
+% T        - data structure returned by kpcfit_init
 % 
 % OUTPUT
 % MAP          - fitted MAP
 % fac          - best-found objective function value for autocorrelation fitting (smaller = better)
 % fbc          - best-found objective function value for bicorrelation fitting (smaller = better)
-% kpcMAPs      - MAP(2)s that are composed by KPC to define the output MAP
+% kpcMAPs      - MAP(2)s to were composed by Kronecker products to define MAP
 %
 % EXAMPLE
-% trace = kpcfit_init(S)
-%   MAP = kpcfit_auto(trace,'NumMAPs',3,'MaxIterAC',10)
+%  T = kpcfit_init(S)
+%  MAP = kpcfit_auto(T,'NumMAPs',3,'MaxIterAC',10)
 %
 % OPTION LIST
 % 'OnlyAC'     - if 1 fitting is performed on moments and autocorrelations
