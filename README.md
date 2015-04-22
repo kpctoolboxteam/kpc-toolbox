@@ -5,7 +5,7 @@ Current version: 0.3.2
 
 Website: http://www.cs.wm.edu/MAPQN/kpctoolbox.html
 
-This software is released under the MIT license, see LICENSE.TXT.
+This software is released under the BSD-3 license, see LICENSE.TXT.
 
 If you are using the KPC-Toolbox for scientific papers or technical reports, please consider citing the following publications:
 
