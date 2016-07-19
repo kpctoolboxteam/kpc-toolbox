@@ -8,7 +8,7 @@ if nargin==3
 end
 ERR=0;
 r1=e1; r2=e2/2;
-h2=(r2-r1^2)/r1^2
+h2=(r2-r1^2)/r1^2;
 if e3==-1
     % select e3 that maximizes the range of correlations
     scv=(e2-e1^2)/e1^2;
