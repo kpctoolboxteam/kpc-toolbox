@@ -17,8 +17,8 @@ function [PH] = kpcfit_ph_auto(E,options)
 % EXAMPLE
 %
 % S; % trace
-% for k=1:6 E(k) = mean(S.^k); end
-% options = kpcfit_ph_options(E,'MinNumStates',4,'MaxNumStates',16);
+% for k=1:16 E(k) = mean(S.^k); end
+% options = kpcfit_ph_options(E,'MinNumStates',2,'MaxNumStates',8);
 % [PH]=kpcfit_ph_auto(E,options) 
 % kpcfit_ph_summary
 % i=1; [alpha,T]=map2ph(PH{i,1}) % (alpha,T) distribution of i-th fitted PH
