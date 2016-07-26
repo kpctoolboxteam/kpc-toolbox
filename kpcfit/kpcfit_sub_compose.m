@@ -59,7 +59,11 @@ for j=2:J
             MAPj=map_normalize({D0,D1});
         end
     end
-    subMAPs{j}=MAPj;
+    if isempty(MAPj)
+        subMAPs{j}=map_exponential(E1j(j));
+    else
+        subMAPs{j}=MAPj;
+    end
     MAP= map_kpc(MAP,MAPj);
 end
 for j=1:J
