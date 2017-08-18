@@ -1,4 +1,4 @@
-function ISFEAS=map_isfeasible(MAP)
+function ISFEAS=map_isfeasible(MAP, TOL)
 % ISFEAS=map_isfeasible(MAP) - Evaluate feasibility of a MAP process
 %
 %  Input:
