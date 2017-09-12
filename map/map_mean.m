@@ -8,5 +8,5 @@ function MEAN=map_mean(MAP)
 %  MEAN: mean inter-arrival time
 %
 
-MEAN=map_moment(MAP,1);
+MEAN=1/map_lambda(MAP);
 end
