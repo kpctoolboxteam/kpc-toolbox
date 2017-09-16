@@ -1,4 +1,4 @@
-function MAP=map_hyperexp(MEAN,SCV,p)
+function [MAP,mu1,mu2,p]=map_hyperexp(MEAN,SCV,p)
 % MAP=map_hyperexp(MEAN,SCV,p) - Fit a two-phase Hyperexponential process as a MAP
 %
 %  Input:
@@ -11,7 +11,7 @@ function MAP=map_hyperexp(MEAN,SCV,p)
 %
 %  Examples:
 %  - MAP=map_hyperexp(1,2) a two-phase Hyperexponential process where
-%    phase 1 is selected with probability 0.5
+%    phase 1 is selected with probability 0.99
 %  - MAP=map_hyperexp(1,2,0.2) a two-phase Hyperexponential process where
 %    phase 1 is selected with probability 0.2
 %  - map_isfeasible(map_hyperexp(1,25,0.5)) a two-phase Hyperexponential 
