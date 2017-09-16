@@ -1,13 +1,10 @@
-Initially, make sure to include all directories into the MATLAB classpath, 
-for example using the command:
- addpath(genpath('INSTALLATION_PATH_HERE/kpc-toolbox')) 
+* To initialize KPC toolbox, cd to the installation directory and type
+addpath(genpath(pwd)) 
 
-A demonstrator of the tool can be run using the command
- demo_run 
+* To demonstrate the main features of the toolboox use
+demo_run 
 
-Help and examples on fitting tool can be accessed by typing
- help kpcfit_auto 
+* For help
+help kpcfit_auto 
+help kpcfit_ph_auto
 
-for the Markovian arrival process fitting tool and
- help kpcfit_ph_auto
-for the phase-type distribution fitting tool. 

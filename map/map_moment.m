@@ -16,13 +16,13 @@ function MOMENTS=map_moment(MAP,ORDERS)
 
 D0=MAP{1};
 D1=MAP{2};
-MOMENTS=[];
 e=ones(length(D0),1);
 pi=map_prob(MAP);
 x=pi*D1;
 y=e/(pi*D1*e);
-for i=ORDERS
+for t=1:length(ORDERS)
+    i=ORDERS(t);
     A=(inv(-D0)^i) ;
-    MOMENTS(end+1)=factorial(i)*x*A*y;
+    MOMENTS(t)=factorial(i)*x*A*y;
 end
 end

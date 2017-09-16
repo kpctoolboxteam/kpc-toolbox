@@ -2,20 +2,19 @@ function [resSCV,resG2,fobjAC]=kpcfit_sub_acfit(E,SA,SAlags,J,MaxIterAC, MaxRuns
 %% optimization parameters
 MaxTimeAC = 10; % 10sec
 MaxResAC=min([MaxResAC,MaxRunsAC]);
-optimoptions = optimset('Algorithm','interior-point', ...
-    'LargeScale','off', ...
-    'MaxIter',MaxIterAC, ...
-    'MaxFunEvals',1e10,  ...
-    'MaxSQPIter',50,  ...
-    'TolCon',kpcfit_tol,  ...
-    'Display','off', ...
-    'OutputFcn',@outfun);
 
 
 %% other variables
 SCV=(E(2)-E(1)^2)/E(1)^2;
 NSA=norm(SA,2); % normalization constant for objective function
 SCVJ=SCV; % initialize nnlcon variable
+%%
+global MAXITER;
+global MAXCHECKITER;
+global T0;
+global lgkx;
+global stagnval;
+global stagniter;
 lgkx = [];
 stagnval = 0;
 stagniter = 0;
@@ -29,6 +28,14 @@ bestindex = 0;
 for i = 1:MaxRunsAC
     x0=[(1+rand(J,1)); rand(J,1)]; x0=x0(:)';
     tstart = tic();
+    optimoptions = optimset('Algorithm','interior-point', ...
+        'LargeScale','off', ...
+        'MaxIter',MaxIterAC, ...
+        'MaxFunEvals',1e10,  ...
+        'MaxSQPIter',50,  ...
+        'TolCon',kpcfit_tol,  ...
+        'Display','off', ...
+        'OutputFcn',@(x,optimValues,state) kpcfit_sub_acfit_outfun(x,optimValues,state,MaxIterAC,MaxTimeAC,tstart,f_best));
     fprintf(1,'acfit: run %d of %d ',i,MaxRunsAC);
     tic;
     [x,f]=fmincon(@objfun,x0,[],[],[],[],0*x0+kpcfit_tol,[],@nnlcon,optimoptions);
@@ -87,42 +94,6 @@ end
             pause(0.001)
         end
         f=norm((SA-acfCoeff),1)/NSA + (SCVJ - SCV)^2/SCV^2;
-    end
-
-    function stop = outfun(x,optimValues,state)
-        stop = false;
-        if strcmpi(state,'iter')
-            if mod(optimValues.iteration,MaxIterAC)==0 && optimValues.iteration>1
-                if ( optimValues.fval >f_best)
-                    stop = true;
-                end
-            end
-            telapsed = toc(tstart);
-            if ( telapsed>MaxTimeAC && optimValues.iteration > MaxIterAC)
-                fprintf(1,'acfit: time limit reached in autocorrelation fitting\n');
-                stop = true;
-            end
-        end
-        if ~isnan(optimValues.fval) & sum(isnan(x)) == 0
-            lgkx = x; % last good known solution
-        else
-            stop = true;
-            %fprintf(' optimization halted: numerical difficulties\n')
-        end
-        if stagnval == 0
-            stagnval = optimValues.fval;
-        end
-        delta = abs(optimValues.fval-stagnval)/stagnval;
-        if delta < 0.01
-            stagniter = stagniter + 1;
-            if stagniter == 100
-                %fprintf(' optimization halted: stagnation ')
-                stop = true;
-            end
-        else
-            stagniter = 0;
-        end
-        stagnval = optimValues.fval;
     end
 
 end

@@ -68,7 +68,7 @@ optimoptions = optimset('Algorithm','active-set', ...
     'MaxSQPIter',500,  ...
     'TolCon',TOL,  ...
     'Display','off', ...
-    'OutputFcn',@outfun);
+    'OutputFcn',@kpcfit_ph_manual_outfun);
 
 stagnval = 0;
 stagniter = 0;
@@ -161,27 +161,6 @@ PH=map_scale(PH,E(1));
         end
     end
 
-    function stop = outfun(x,optimValues,state)
-        stop = false;
-        if ~isnan(optimValues.fval) & ~isnan(x)
-            lgkx = x;
-        else
-            stop = true;
-            %            fprintf('optimization stop: numerical difficulties detected\n')
-        end
-        if stagnval == 0
-            stagnval = optimValues.fval;
-        end
-        delta = abs(optimValues.fval-stagnval)/stagnval;
-        if delta < 0.01
-            stagniter = stagniter + 1;
-            if stagniter == 100
-                %                fprintf('optimization stop: stagnation detected\n')
-                stop = true;
-            end
-        end
-        stagnval = optimValues.fval;
-    end
 end
 
 function [MAP]=map_rand(K)
