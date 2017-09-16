@@ -1,17 +1,9 @@
-function [E1j,E3j,f]=map_kpcfit_bispectrum(E,SCVj,G2j,BC,BCLags,MaxIterBC, MaxRunsBC)
+function [E1j,E3j,f]=kpcfit_sub_bcfit(E,SCVj,G2j,BC,BCLags,MaxIterBC, MaxRunsBC)
 %% optimization parameters
 MaxTimeBC = 100;
 NumMAPs=length(SCVj);
 TOL=1e-9;
 EPSTOL=10*TOL;
-options = optimset('LargeScale','off', ...
-    'MaxIter',MaxIterBC, ...
-    'MaxFunEvals',1e10, ...
-    'MaxSQPIter',500, ...
-    'TolCon',TOL, ...
-    'Display','off', ...
-    'DiffMinChange',1e-10, ...
-    'OutputFcn',@outfun);
 
 %% other variables
 NBC=norm(BC,2); % normalizing constants for bicovariances
@@ -40,12 +32,21 @@ for j = 1:NumMAPs
 end
 x0=[E1j(:);E3j(:)]';
 
-    fprintf(1,'bcfit: maximum number of solver iterations per run is MaxIterBC = %d\n', MaxIterBC);
+fprintf(1,'bcfit: maximum number of solver iterations per run is MaxIterBC = %d\n', MaxIterBC);
 for i = 1:MaxRunsBC
     tstart = tic();
     fprintf(1,'bcfit: run %d of %d ',i,MaxRunsBC);
     tic;
     numIterations = 0;
+    options = optimset('LargeScale','off', ...
+        'MaxIter',MaxIterBC, ...
+        'MaxFunEvals',1e10, ...
+        'MaxSQPIter',500, ...
+        'TolCon',TOL, ...
+        'Display','off', ...
+        'DiffMinChange',1e-10, ...
+        'OutputFcn',@(x,optimValues,state) kpcfit_sub_bcfit_outfun(x,optimValues,state,MaxIterBC,MaxTimeBC,tstart,f_best));
+    
     [x,f,exitflag]=fmincon(@objfun,x0,[],[],[],[],0*x0+EPSTOL,[],@nnlcon,options);
     fprintf(1,'(%3.3f sec, %d iter)\n',toc, numIterations);
     xparamset{end+1} = x;
@@ -120,23 +121,6 @@ f = f_best;
             f=2*fold;
         else
             fold=f;
-        end
-    end
-
-    function stop = outfun(x,optimValues,state)
-        numIterations = optimValues.iteration;
-        stop = false;
-        if strcmpi(state,'iter')
-            if optimValues.iteration >= MaxIterBC && optimValues.iteration>1
-                if ( optimValues.fval > f_best)
-                    stop = true;
-                end
-            end
-            telapsed = toc(tstart);
-            if (telapsed>MaxTimeBC && optimValues.iteration > MaxIterBC)
-                fprintf('Time limit reached in moments fitting. Aborting.\n');
-                stop = true;
-            end
         end
     end
 

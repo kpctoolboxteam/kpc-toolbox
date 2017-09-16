@@ -32,11 +32,13 @@ end
 end
 
 function isfeas=map_checkfeasible(MAP,TOL)
+w=warning;
 warning off;
 n=size(MAP{1});
 D0=MAP{1};
 D1=MAP{2};
 if sum(isnan(D0(:)))>0
+    warning(w);
     isfeas=0;
     return
 end
@@ -88,6 +90,7 @@ for i=1:n
     end
 end
 if isfeas==0
+    warning(w);
     return;
 end
 %% validate irreducibility

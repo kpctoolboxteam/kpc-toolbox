@@ -11,12 +11,15 @@ optimoptions = optimset('Algorithm','interior-point', ...
     'MaxSQPIter',50,  ...
     'TolCon',kpcfit_tol,  ...
     'Display','off', ...
-    'OutputFcn',@outfun);
+    'OutputFcn',@(x,optimValues,state) kpcfit_ph_outfun(x,optimValues,state));
 
 if nargin  < 5
     SCV = (E(2)-E(1)^2)/E(1)^2;
     max_aph_order = ceil(1/SCV);
 end
+global lgkx;
+global stagnval;
+global stagniter;
 stagnval = 0;
 stagniter = 0;
 order = 2*ones(1,J); % Current version assumes all PH(2)s
@@ -149,29 +152,6 @@ return
         end
     end
 
-    function stop = outfun(x,optimValues,state)
-        stop = false;
-        if ~isnan(optimValues.fval) & sum(isnan(x)) == 0
-            lgkx = x; % last good known solution
-        else
-            stop = true;
-            %fprintf(' optimization halted: numerical difficulties\n')
-        end
-        if stagnval == 0
-            stagnval = optimValues.fval;
-        end
-        delta = abs(optimValues.fval-stagnval)/stagnval;
-        if delta < 0.01
-            stagniter = stagniter + 1;
-            if stagniter == 100
-                %fprintf(' optimization halted: stagnation ')
-                stop = true;
-            end
-        else
-            stagniter = 0;
-        end
-        stagnval = optimValues.fval;
-    end
 end
 
 function [MAP]=map_rand(K)
