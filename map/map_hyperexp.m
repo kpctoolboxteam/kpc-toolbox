@@ -14,7 +14,7 @@ function [MAP,mu1,mu2,p]=map_hyperexp(MEAN,SCV,p)
 %    phase 1 is selected with probability 0.99
 %  - MAP=map_hyperexp(1,2,0.2) a two-phase Hyperexponential process where
 %    phase 1 is selected with probability 0.2
-%  - map_isfeasible(map_hyperexp(1,25,0.5)) a two-phase Hyperexponential 
+%  - map_isfeasible(map_hyperexp(1,25,0.5)) a two-phase Hyperexponential
 %    with SCV=25 and p=0.5 does not exist
 %
 
