@@ -38,11 +38,11 @@ end
 if nargin<4
     seed=rand('seed');
 end
-if length(pi)==1
-    pi=zeros(1,length(MAP{1}));
-    pi(initState)=1;
-end
-rand('seed',seed);
+% if length(pi)==1
+%     pi=zeros(1,length(MAP{1}));
+%     pi(initState)=1;
+% end
+%rand('seed',seed);
 r=rand();
 initState=min(find(r<=cumsum(pi)));
 RUNS=floor(nSamples/10000);
@@ -55,6 +55,7 @@ for i=1:RUNS
     SAMPLES(end+1:end+length(S),1)=S(:);
     LAST(end+1:end+length(L),1)=L(:);
     FIRST(end+1:end+length(L),1)=F(:);
+    LS = L(end);
 end
 [S,L,F]=sub_map_sample(MAP,mod(nSamples,10000),LS);
 SAMPLES(end+1:end+length(S),1)=S(:);
