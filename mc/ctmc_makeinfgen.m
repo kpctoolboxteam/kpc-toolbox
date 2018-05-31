@@ -1,5 +1,3 @@
-function Q=makeinfgen(Q)
-for i=1:length(Q)
-    Q(i,i)=-(sum(Q(i,:))-Q(i,i));
-end
+function Q=ctmc_makeinfgen(Q)
+A=Q-diag(diag(Q)); Q=A-diag(sum(A,2));
 end
