@@ -10,7 +10,6 @@ function [PROB,Q]=ctmc_solve(Q,options)
 %
 %  Examples:
 %  - ctmc_solve([-0.5,0.5;0.2,-0.2])
-%
 
 if length(Q) > 6000
     warning('the order of Q is greater than 6000, i.e., %d elements. Press key to continue.',length(Q));
@@ -44,3 +43,4 @@ PROB=p'; % p is a row vector
 %     end
 %     graphlayout('adjMatrix',Qsav-diag(diag(Qsav)),'nodeLabels',labels,'nodeDescriptions',descr,'edgeLabels',labels,'currentLayout',treelayout);
 % end
+end
