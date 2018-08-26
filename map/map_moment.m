@@ -26,7 +26,11 @@ x=pi*D1;
 y=e/(pi*D1*e);
 for t=1:length(ORDERS)
     i=ORDERS(t);
-    A=(inv(-D0)^i) ;
-    MOMENTS(t)=factorial(i)*x*A*y;
+    if isnan(D0)
+        MOMENTS(t)=NaN;
+    else
+        A=(inv(-D0)^i);
+        MOMENTS(t)=factorial(i)*x*A*y;
+    end
 end
 end

@@ -8,7 +8,7 @@ H20{2}=[
     ];
 H20=map_renewal(H20);
 
-E=map_moment(H20),1:3);
+E = map_moment(H20,1:3);
 options = kpcfit_ph_options(E);
 fprintf('\n*******************************************************************************\n');
 fprintf('Generating 3 moments from Hyper-Exponential(3)\n')

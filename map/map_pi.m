@@ -3,7 +3,7 @@ function p=map_pi(MAP)
 % a MAP, at arrival moments
 % MAP:  Markovian arrival process to evaluate
 %
-% Copyright (c) 2012-2014, Imperial College London 
+% Copyright (c) 2015-2018, Imperial College London 
 % All rights reserved.
 
     p=dtmc_solve(map_embedded(MAP));
