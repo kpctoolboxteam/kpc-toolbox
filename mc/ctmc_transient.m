@@ -1,4 +1,7 @@
-function [pi,t]=ctmc_transient(Q,pi0,t0,t1)
+function [pi,t]=ctmc_transient(Q,pi0,t0,t1,useStiff)
+if ~exist('useStiff','var')
+useStiff = false;
+end
 if nargin==2
     t1=pi0;
     t0=0;
@@ -8,8 +11,11 @@ if nargin==3
     t1=t0;
     t0=0;
 end
-[t,pi]=ode23(@ctmc_transientode,[t0,t1],pi0);
-%%[t,pi]=ode45(@ctmc_transientode,[t0,t1],pi0); % standard order 4-5
+if useStiff
+    [t,pi]=ode15s(@ctmc_transientode,[t0,t1],pi0);
+else
+    [t,pi]=ode23(@ctmc_transientode,[t0,t1],pi0);
+end
 %[t,pi]=ode113(@ctmc_transientode,[t0,t1],pi0);
 
     function dpidt=ctmc_transientode(t,pi)
