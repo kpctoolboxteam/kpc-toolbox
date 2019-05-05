@@ -10,6 +10,9 @@ function f=map_pdf(MAP,tset)
 
 pi=map_pi(MAP);
 f=[];
+if issym(MAP{1})
+    f=sym(f);
+end
 e=ones(length(MAP{2}),1);
 for t=tset    
     f(end+1)=pi*(expm(MAP{1}*t)*(-MAP{1}))*e;

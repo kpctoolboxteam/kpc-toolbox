@@ -58,6 +58,7 @@ if mod(options.('MaxNumStates'),2^round(log2(options.('MaxNumStates')))) > 0 % i
     warning('MATLAB:kpcfit_ph_options:not_power_of_two',sprintf('MaxNumStates not a multiple of 2, fixed to %d.', options.('MaxNumStates')));
 end
 
+
 if 2*options.('MaxNumStates')-1 > length(E)
     error('MATLAB:kpcfit_ph_options:insufficient_moments',sprintf('MaxNumStates of %d requires to supply at least %d moments.', options.('MaxNumStates'),2*options.('MaxNumStates')-1));
 end

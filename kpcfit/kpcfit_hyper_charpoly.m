@@ -1,4 +1,4 @@
-function m = hyper_charpoly(E,n)
+function m = kpcfit_hyper_charpoly(E,n)
 E=[1,E(:)'];
 f = factorial(0:(2*n-1));
 for i = 1:n

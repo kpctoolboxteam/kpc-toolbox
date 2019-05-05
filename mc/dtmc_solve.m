@@ -1,4 +1,4 @@
-function PROB=dtmc_solve(P)
+function PROB=dtmc_solve(P,options)
 % PROB=dtmc_solve(P) - Equilibrium distribution of a discrete-time Markov
 % chain
 %
@@ -12,5 +12,9 @@ function PROB=dtmc_solve(P)
 %  - dtmc_solve([0.5,0.5;0.2,0.8])
 %
 
-PROB=ctmc_solve(P-eye(size(P)));
+if nargin<2
+    PROB=ctmc_solve(P-eye(size(P)));
+else
+    PROB=ctmc_solve(P-eye(size(P)),options);
+end
 end
