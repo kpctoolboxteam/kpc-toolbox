@@ -17,6 +17,7 @@ if exist('xcorr')
     rho=rho(lags);
 else
     warning('trace_acf: signal processing toolbox not found, autocorrelation estimation may be slower than usual.');
+    S=S(:);
     tic; acv = autocov(S-mean(S)); rho=acv(1+lags)'/acv(1); toc
     % E1=mean(S);
     %     E2=mean(S.^2);
