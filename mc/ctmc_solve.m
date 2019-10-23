@@ -1,4 +1,4 @@
-function [p,Q]=ctmc_solve(Q,options)
+function [p, Q, nConnComp, connComp]=ctmc_solve(Q,options)
 % PROB=ctmc_solve(P) - Equilibrium distribution of the continuous-time
 % Markov chain
 %
@@ -26,8 +26,15 @@ if size(Q)==1
 end
 
 Q = ctmc_makeinfgen(Q); % so that spurious diagonal elements are set to 0
-
 n = length(Q);
+if nargout > 2    
+    [nConnComp, connComp] = weaklyconncomp(Q+Q');
+    if nConnComp > 1
+        % reducible generator - fail fast
+        p = nan(1,n);
+        return
+    end
+end
 if all(Q==0)
     p = ones(1,n)/n;
     return
@@ -42,25 +49,27 @@ Qnnz_1 = Qnnz; bnnz_1 = bnnz;
 isReducible = false;
 goon = true;
 while goon
-%     zerorow=find(sum(abs(Qnnz),2)==0);
-%         if length(zerorow)>=1
-%             if nargin==1 || options.verbose
-%                 %warning('ctmc_solve: the infinitesimal generator is reducible (zero row)');
-%                 fprintf(1,'ctmc_solve: the infinitesimal generator is reducible.\n');
-%                 isReducible = true;
-%             end
-%         end
-%     nnzrow = setdiff(nnzel, zerorow);
-%     
-%     zerocol=find(sum(abs(Qnnz),1)==0);
-%     nnzcol = setdiff(nnzel, zerocol);
-%         if length(zerocol)>=1
-%             if ~isReducible && (nargin==1 || options.verbose)
-%                 %warning('ctmc_solve: the infinitesimal generator is reducible (zero column)');
-%                 fprintf(1,'ctmc_solve: the infinitesimal generator is reducible.\n');
-%             end
-%         end
-%     nnzel = intersect(nnzrow, nnzcol);
+    
+    %
+    %     zerorow=find(sum(abs(Qnnz),2)==0);
+    %         if length(zerorow)>=1
+    %             if nargin==1 || options.verbose
+    %                 %warning('ctmc_solve: the infinitesimal generator is reducible (zero row)');
+    %                 fprintf(1,'ctmc_solve: the infinitesimal generator is reducible.\n');
+    %                 isReducible = true;
+    %             end
+    %         end
+    %     nnzrow = setdiff(nnzel, zerorow);
+    %
+    %     zerocol=find(sum(abs(Qnnz),1)==0);
+    %     nnzcol = setdiff(nnzel, zerocol);
+    %         if length(zerocol)>=1
+    %             if ~isReducible && (nargin==1 || options.verbose)
+    %                 %warning('ctmc_solve: the infinitesimal generator is reducible (zero column)');
+    %                 fprintf(1,'ctmc_solve: the infinitesimal generator is reducible.\n');
+    %             end
+    %         end
+    %     nnzel = intersect(nnzrow, nnzcol);
     
     nnzel = find(sum(abs(Qnnz),1)~=0 & sum(abs(Qnnz),2)'~=0);
     if length(nnzel) < n && ~isReducible
@@ -104,4 +113,5 @@ if exist('options','var')
 else
     p(nnzel)=Qnnz'\ bnnz;
 end
+
 end

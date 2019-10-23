@@ -18,11 +18,13 @@ function options = kpcfit_ph_options(E,varargin)
 % options = kpcfit_ph_options(E,'MinExactMom',2,'MaxNumStates',4,'Runs',1)
 
 % Default options
+options.('Verbose') = true;
 options.('Runs') = 5;
 options.('MinNumStates') = 2;
 options.('MaxNumStates') = 32;
 options.('MinExactMom') = 3;
 
+ranges.('Verbose') = [false,true];
 ranges.('Runs') = [1,Inf];
 ranges.('MinNumStates') = [2,Inf];
 ranges.('MaxNumStates') = [2,Inf];
@@ -57,7 +59,6 @@ if mod(options.('MaxNumStates'),2^round(log2(options.('MaxNumStates')))) > 0 % i
     options.('MaxNumStates') = 2^ceil(log2(ceil(options.('MaxNumStates'))));
     warning('MATLAB:kpcfit_ph_options:not_power_of_two',sprintf('MaxNumStates not a multiple of 2, fixed to %d.', options.('MaxNumStates')));
 end
-
 
 if 2*options.('MaxNumStates')-1 > length(E)
     error('MATLAB:kpcfit_ph_options:insufficient_moments',sprintf('MaxNumStates of %d requires to supply at least %d moments.', options.('MaxNumStates'),2*options.('MaxNumStates')-1));
