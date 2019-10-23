@@ -8,10 +8,10 @@ function [PH] = kpcfit_ph_auto(E,options)
 %
 % INPUT
 % E        - vector of moments, E(k) = E[X^k]
-% options  - ph fitting 
+% options  - ph fitting
 %
 % OUTPUT
-% PH{i,1}: the i-th fitted PH described as a PH-renewal process specified 
+% PH{i,1}: the i-th fitted PH described as a PH-renewal process specified
 %          in the (D0,D1) notation. The (alpha,T) representa
 %
 % EXAMPLE
@@ -19,12 +19,14 @@ function [PH] = kpcfit_ph_auto(E,options)
 % S; % trace
 % for k=1:16 E(k) = mean(S.^k); end
 % options = kpcfit_ph_options(E,'MinNumStates',2,'MaxNumStates',8);
-% [PH]=kpcfit_ph_auto(E,options) 
+% [PH]=kpcfit_ph_auto(E,options)
 % kpcfit_ph_summary
 % i=1; [alpha,T]=map2ph(PH{i,1}) % (alpha,T) distribution of i-th fitted PH
 
-fprintf('kpcfit_ph: version %s\n',kpcfit_version())
-fprintf('kpcfit_ph: type "help kpcfit_ph_options" for options\n')
+if options.Verbose
+    fprintf('kpcfit_ph: version %s\n',kpcfit_version())
+    fprintf('kpcfit_ph: type "help kpcfit_ph_options" for options\n')
+end
 
 %% initialization
 % scale moments such that E[X]=1
@@ -36,14 +38,18 @@ end
 E = (E(:) ./ Escale(:))';
 
 %% determine best exact fit -- Prony's method
-fprintf('\nkpcfit_ph: starting exact fitting methods\n')
+if options.Verbose
+    fprintf('\nkpcfit_ph: starting exact fitting methods\n')
+end
 PH_EXACT = kpcfit_ph_exact(E, options);
 
 %% determine best approximate fit -- moment space
-fprintf('\nkpcfit_ph: starting approximate fitting method -- moment space (KPC-based)\n')
+if options.Verbose
+    fprintf('\nkpcfit_ph: starting approximate fitting method -- moment space (KPC-based)\n')
+    fprintf('\t\t\tRUN\t\tORD\tDIST\t\tRESULT')
+end
 PH_APX_MS = {};
 
-fprintf('\t\t\tRUN\t\tORD\tDIST\t\tRESULT')
 tic;
 for J = max([2,ceil(log2(options.MinNumStates))]):ceil(log2(options.MaxNumStates)) % for all number of MAPs to compose
     % initialize
@@ -54,12 +60,14 @@ for J = max([2,ceil(log2(options.MinNumStates))]):ceil(log2(options.MaxNumStates
     % random runs
     randomruns = ceil(2*options.Runs/3); % number of runs with random initial point
     for run = 1:options.Runs
-        if run > randomruns
-            fprintf(1,'\n\t\t\t%dr\t',run); %run number
-        else
-            fprintf(1,'\n\t\t\t%d\t',run); %run number
+        if options.Verbose
+            if run > randomruns
+                fprintf(1,'\n\t\t\t%dr\t',run); %run number
+            else
+                fprintf(1,'\n\t\t\t%d\t',run); %run number
+            end
+            fprintf(1,'\t%d',2^J); % number of states
         end
-        fprintf(1,'\t%d',2^J); % number of states
         %try
         if run > randomruns && best > 0
             x0 = PH_APX_MS{bestidx,3}; %x0 = x0 * mean(x0)*1e-2*rand(size(x0));
@@ -71,7 +79,9 @@ for J = max([2,ceil(log2(options.MinNumStates))]):ceil(log2(options.MaxNumStates
         if map_isfeasible(APX)
             PH_APX_MS = store_result(PH_APX_MS,APX);
         else
-            fprintf(1,'\t\t\t\tx infeasible result.');
+            if options.Verbose
+                fprintf(1,'\t\t\t\tx infeasible result.');
+            end
         end
         %catch
         %    fprintf(1,'\t\t\t\tx optimization solver failed.');
@@ -83,9 +93,13 @@ end
 
 SCV = (E(2)-E(1)^2)/E(1)^2;
 if SCV >= 1
-    fprintf('\n\nkpcfit_ph: starting approximate fitting method -- hyper-exponential parameter space (non-KPC-based)\n')
+    if options.Verbose
+        fprintf('\n\nkpcfit_ph: starting approximate fitting method -- hyper-exponential parameter space (non-KPC-based)\n')
+    end
     PH_APX_PS = {};
-    fprintf('\t\t\tRUN\t\tORD\tDIST\t\tRESULT')
+    if options.Verbose
+        fprintf('\t\t\tRUN\t\tORD\tDIST\t\tRESULT')
+    end
     for J = max([2,ceil(log2(options.MinNumStates))]):ceil(log2(options.MaxNumStates)) % for all number of MAPs to compose
         % initialize
         mindist = Inf;
@@ -95,18 +109,24 @@ if SCV >= 1
         % random runs
         randomruns = ceil(2*options.Runs/3); % number of runs with random initial point
         for run = 1:options.Runs
-            fprintf(1,'\n\t\t\t%d\t',run); %run number
-            fprintf(1,'\t%d',2^J); % number of states
+            if options.Verbose
+                fprintf(1,'\n\t\t\t%d\t',run); %run number
+                fprintf(1,'\t%d',2^J); % number of states
+            end
             try
                 [APX,~,x] = psfit_hyperexp_weighted(E,2^J);
                 
                 if map_isfeasible(APX)
                     PH_APX_PS = store_result(PH_APX_PS,APX);
                 else
-                    fprintf(1,'\t\t\t\tinfeasible result.');
+                    if options.Verbose
+                        fprintf(1,'\t\t\t\tinfeasible result.');
+                    end
                 end
             catch
-                fprintf(1,'\t\t\t\tx optimization solver failed.');
+                if options.Verbose
+                    fprintf(1,'\t\t\t\tx optimization solver failed.');
+                end
             end
         end
     end
@@ -134,7 +154,9 @@ else
                     fprintf(1,'\t\t\t\tinfeasible result.');
                 end
             catch
-                fprintf(1,'\t\t\t\tx optimization solver failed.');
+                if options.Verbose
+                    fprintf(1,'\t\t\t\tx optimization solver failed.');
+                end
             end
         end
     end
@@ -164,10 +186,12 @@ for j = 1:size(PH_APX_PS,1)
     PH{nExactResults + nApproxMS + j,4} = 'approx_param_space';
 end
 
-fprintf(sprintf('\n\nReturned %d PH distribution(s) by exact moment matching.',nExactResults));
-fprintf(sprintf('\nReturned %d PH distribution(s) by approximate moment matching (moment space).',size(PH_APX_MS,1)));
-fprintf(sprintf('\nReturned %d PH distribution(s) by approximate moment matching (parameter space).',size(PH_APX_PS,1)));
-fprintf('\n\n');
+if options.Verbose
+    fprintf(sprintf('\n\nReturned %d PH distribution(s) by exact moment matching.',nExactResults));
+    fprintf(sprintf('\nReturned %d PH distribution(s) by approximate moment matching (moment space).',size(PH_APX_MS,1)));
+    fprintf(sprintf('\nReturned %d PH distribution(s) by approximate moment matching (parameter space).',size(PH_APX_PS,1)));
+    fprintf('\n\n');
+end
 return
 
     function dist = dist_fun(Eref,Eapx)
@@ -179,21 +203,31 @@ return
     function PH_APX_MS = store_result(PH_APX_MS,APX)
         dist = dist_fun(E, map_moment(APX,1:length(E)));
         if isnan(dist)
-            fprintf(1,'\t-------- \tx no solution found.',dist);
+            if options.Verbose
+                fprintf(1,'\t-------- \tx no solution found.',dist);
+            end
         else
-            fprintf(1,'\t%6.6f',dist);
+            if options.Verbose
+                fprintf(1,'\t%6.6f',dist);
+            end
             if min([Inf,dist]) < mindist
                 %            fprintf(1,'+',length(PH_APX_MS));
                 if best == 0
                     PH_APX_MS{end+1,1} = APX;
                     if length(APX{1}) > 2^J
-                    fprintf(1,sprintf('\to PH(%d) saved.  \t elapsed: %0.3fs [order automatically increased to match second moment]',length(APX{1}),toc));
+                        if options.Verbose
+                            fprintf(1,sprintf('\to PH(%d) saved.  \t elapsed: %0.3fs [order automatically increased to match second moment]',length(APX{1}),toc));
+                        end
                     else
-                    fprintf(1,sprintf('\to PH(%d) saved.  \t elapsed: %0.3fs',length(APX{1}),toc));
+                        if options.Verbose
+                            fprintf(1,sprintf('\to PH(%d) saved.  \t elapsed: %0.3fs',length(APX{1}),toc));
+                        end
                     end
                 else
                     PH_APX_MS{end,1} = APX;
-                    fprintf(1,sprintf('\t+ PH(%d) updated. \t elapsed: %0.3fs',length(APX{1}),toc));
+                    if options.Verbose
+                        fprintf(1,sprintf('\t+ PH(%d) updated. \t elapsed: %0.3fs',length(APX{1}),toc));
+                    end
                 end
                 best = run;
                 bestidx = size(PH_APX_MS,1);
@@ -201,7 +235,9 @@ return
                 PH_APX_MS{end,2} = dist;
                 PH_APX_MS{end,3} = x;
             else
-                fprintf(1,sprintf('\t\t\t\t\t\t elapsed: %0.3fs',toc));
+                if options.Verbose
+                    fprintf(1,sprintf('\t\t\t\t\t\t elapsed: %0.3fs',toc));
+                end
             end
         end
     end
