@@ -10,9 +10,9 @@ NBC=norm(BC,2); % normalizing constants for bicovariances
 
 %% truncate bicorrelations when it gets negative
 tag=[];
-for i=1:size(BCLags,1)
-    if find(diff(BCLags(i,:))<0)
-        tag(end+1,1)=i;
+for index=1:size(BCLags,1)
+    if find(diff(BCLags(index,:))<0)
+        tag(end+1,1)=index;
     end
 end
 BCLags(tag,:)=[];
@@ -26,18 +26,24 @@ xparamset = {}; % record all the possible x params
 fset = [];   % record the objective function values for each param set
 xparam_best = [];
 f_best = inf;
-for j = 1:NumMAPs
-    E2j(j)=(1+SCVj(j))*E1j(j)^2;
-    E3j(j)=(3/2+t)*E2j(j)^2/E1j(j);
+for index = 1:NumMAPs
+    E2j(index)=(1+SCVj(index))*E1j(index)^2;
+    E3j(index)=(3/2+t)*E2j(index)^2/E1j(index);
 end
 x0=[E1j(:);E3j(:)]';
+x0base=x0;
 
 fprintf(1,'bcfit: maximum number of solver iterations per run is MaxIterBC = %d\n', MaxIterBC);
-for i = 1:MaxRunsBC
+for ind = 1:MaxRunsBC
     tstart = tic();
-    fprintf(1,'bcfit: run %d of %d ',i,MaxRunsBC);
+    fprintf(1,'bcfit: run %d of %d ',ind, MaxRunsBC);
     tic;
-    numIterations = 0;
+    
+     if ind > 1
+         %x0 = x0base .* [(2*rand(NumMAPs,1)); 2*rand(NumMAPs,1)]';
+         x0 = x0base .* [(0.5+rand(NumMAPs,1)); 0.5+rand(NumMAPs,1)]';
+     end
+    
     options = optimset('LargeScale','off', ...
         'MaxIter',MaxIterBC, ...
         'MaxFunEvals',1e10, ...
@@ -47,16 +53,16 @@ for i = 1:MaxRunsBC
         'DiffMinChange',1e-10, ...
         'OutputFcn',@(x,optimValues,state) kpcfit_sub_bcfit_outfun(x,optimValues,state,MaxIterBC,MaxTimeBC,tstart,f_best));
     
-    [x,f,exitflag]=fmincon(@objfun,x0,[],[],[],[],0*x0+EPSTOL,[],@nnlcon,options);
-    fprintf(1,'(%3.3f sec, %d iter)\n',toc, numIterations);
+    [x,f,exitflag,output]=fmincon(@objfun,x0,[],[],[],[],0*x0+EPSTOL,[],@nnlcon,options);
+    fprintf(1,'(%3.3f sec, %d iter) f=%f',toc, output.iterations, f);
     xparamset{end+1} = x;
     fset(1,end+1) = f;
     if f < f_best
-        %        fprintf(1,'**best**',toc);
+        fprintf(1,'**best**',toc);
         f_best = f;
         xparam_best = x;
     end
-    %fprintf(1,'\n',toc);
+    fprintf(1,'\n',toc);
 end
 [v,ind] = sort(fset,2,'ascend');
 
@@ -110,8 +116,8 @@ f = f_best;
             else
                 MAPj=map_block(E1j(j),(1+SCVj(j))*E1j(j)^2,E3j(j),G2j(j));
             end
-            for i=1:size(BCLags,1)
-                BCj(i)=BCj(i)*(map_joint(MAPj,BCLags(i,:),[1,1,1]));
+            for indexL=1:size(BCLags,1)
+                BCj(indexL)=BCj(indexL)*(map_joint(MAPj,BCLags(indexL,:),[1,1,1]));
             end
         end
         f=norm(BC-BCj,2)/NBC; %rms, this is the objective function
