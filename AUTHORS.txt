@@ -1,0 +1,7 @@
+This file acknowledges main codebase authors across successive releases of the tool (in alphabetical order):
+0.3.* (2011-20): Giuliano Casale, Evgenia Smirni
+0.2.* (2008-10): Giuliano Casale, Evgenia Smirni
+
+We gracefully acknowledge the following people for their feedbacks and contributions to the debugging of KPC-toolbox:
+0.3.2: Gabriele Russo Russo
+
