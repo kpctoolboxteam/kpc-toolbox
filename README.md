@@ -1,7 +1,7 @@
 # KPC-Toolbox
 KPC-Toolbox: MATLAB toolbox to fit Markovian Arrival Processes
 
-Current version: 0.3.2
+Current version: 0.3.3
 
 Website: http://www.cs.wm.edu/MAPQN/kpctoolbox.html
 
