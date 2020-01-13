@@ -80,7 +80,7 @@ else
 end
 
 %% determine best result
-[v,ind] = sort(fobjBC,2,'ascend');
+[v,ind] = sort(fobjBC,1,'ascend'); 
 bestpos = ind(1);
 fac = fobjAC(bestpos);
 fbc = fobjBC(bestpos);
