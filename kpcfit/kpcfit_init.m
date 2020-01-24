@@ -39,9 +39,9 @@ end
 n = length(S);
 options.MaxMoment = 3; % fit 3 moments (this value is currently unused)
 nMinSupportAC = 10; % mininum number of points needed to estimate an AC coefficient
-options.ACLags = unique(logspacei(1,ceil(length(S)/nMinSupportAC),500)); % AC lags used for fitting
+options.ACLags = unique(logspacei(1,ceil(n/nMinSupportAC),500)); % AC lags used for fitting
 options.BCGridLags = unique(logspacei(1,max(options.ACLags),5)); % lags used to generate square BC grid for fitting
-options.Smooth = 1;
+options.Smooth = 0;
 options.LogSmooth = 0;
 % Parse optional parameters
 options=ParseOptPara(options,OptionNames,OptionTypes,OptionValues,varargin);
@@ -54,7 +54,7 @@ for j=1:options.MaxMoment
     E(j)=mean(S.^j);
 end
 
-if options.Smooth > 1
+if options.Smooth > 0
     fprintf(1,'init: computing smoothed autocorrelations from the trace\n');
     if exist('smooth')==0
      warning('MATLAB:kpcfit_init:cftoolbox','curve fitting toolbox not installed, smooth function unavailable\n');
@@ -84,6 +84,8 @@ if ~isempty(posmax)
     todel = options.BCGridLags>posmax;
     options.BCGridLags(todel)=[]; % lags of AC used for fitting
 end
+fprintf(1, "Using %d AC Lags\n", length(options.ACLags));
+
 
 fprintf(1,'init: computing bicovariances from the trace\n');
 [BC,BCLags]=trace_bicov(S,options.BCGridLags); % bispectrum coefficients
