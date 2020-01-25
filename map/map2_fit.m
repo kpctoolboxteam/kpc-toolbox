@@ -90,13 +90,13 @@ end
 
 if h2>0 && h3>0
     MAP=map_fit_hyper();
-    if length(MAP)>0 && map_isfeasible(MAP)<5
+    if length(MAP)>0 && map_isfeasible(MAP)==0 
         ERR=-1;
     end
     return
 elseif -1/4<=h2 && h2<0 && h2*(1-h2-2*sqrt(-h2))<=h3 && h3<=-h2^2
     MAP=map_fit_hypo();
-    if length(MAP)>0 && map_isfeasible(MAP)<10
+    if length(MAP)>0 && map_isfeasible(MAP)==0
         ERR=-1;
     end
     return
