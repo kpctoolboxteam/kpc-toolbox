@@ -22,9 +22,12 @@ OptionNames = [
     'MaxResAC  ';
     'OnlyAC    ';
     'AnimateAC ';
+    'MaxRetMAPs';
+    'ParallelBC';
     ];
 
 OptionTypes = [
+    'numeric';
     'numeric';
     'numeric';
     'numeric';
@@ -46,6 +49,9 @@ options.MaxIterBC =  10; % iterate up to 10 times to fit bicorrelations
 options.MaxRunsAC =  50; % maximum number of runs for AC fitting
 options.MaxRunsBC =  30; % maximum number of runs for AC fitting
 options.MaxResAC  =  min([options.MaxRunsAC,10]); % maximum number of values returned for AC fitting
+options.MaxRetMAPs = 1;  % maximum number of MAPs returned
+options.ParallelBC = 0; % parallelize BC runs
+
 
 % Parse Optional Parameters
 options=ParseOptPara(options,OptionNames,OptionTypes,OptionValues,varargin);
@@ -61,13 +67,23 @@ resE1 = cell(length(resSCV),1);
 resE3 = cell(length(resSCV),1);
 fobjBC = zeros(length(resSCV),1);
 
-if options.OnlyAC == false
-    for i = 1:length(resSCV)
-        fprintf(1,'\nfitting: processing acfit subresult %d of top %d\n',i,length(resSCV));
-        [E1j,E3j,foBC] = kpcfit_sub_bcfit(E,resSCV{i},resG2{i},BC,BCLags,options.MaxIterBC,options.MaxRunsBC);
-        resE1{i}  = E1j;
-        resE3{i}  = E3j;
-        fobjBC(i) = foBC;
+if options.OnlyAC == false    
+    if options.ParallelBC > 0
+        parfor i = 1:length(resSCV)
+            fprintf(1,'fitting: processing acfit subresult %d of top %d\n',i,length(resSCV));
+            [E1j,E3j,foBC] = kpcfit_sub_bcfit(E,resSCV{i},resG2{i},BC,BCLags,options.MaxIterBC,options.MaxRunsBC);
+            resE1{i}  = E1j;
+            resE3{i}  = E3j;
+            fobjBC(i) = foBC;
+        end
+    else
+         for i = 1:length(resSCV)
+            fprintf(1,'fitting: processing acfit subresult %d of top %d\n',i,length(resSCV));
+            [E1j,E3j,foBC] = kpcfit_sub_bcfit(E,resSCV{i},resG2{i},BC,BCLags,options.MaxIterBC,options.MaxRunsBC);
+            resE1{i}  = E1j;
+            resE3{i}  = E3j;
+            fobjBC(i) = foBC;
+        end
     end
 elseif options.OnlyAC == true
     for i = 1:length(resSCV)
@@ -80,15 +96,94 @@ else
 end
 
 %% determine best result
-[v,ind] = sort(fobjBC,1,'ascend'); 
-bestpos = ind(1);
-fac = fobjAC(bestpos);
-fbc = fobjBC(bestpos);
+[v,ind] = sort(fobjBC,1,'ascend');
 
-%% compose intermediate results into final MAP
-[MAP,subMAPs]=kpcfit_sub_compose(resE1{bestpos},resSCV{bestpos},resE3{bestpos},resG2{bestpos});
+% truncate bicorrelations when it gets negative
+tag=[];
+for index=1:size(BCLags,1)
+    if find(diff(BCLags(index,:))<0)
+        tag(end+1,1)=index;
+    end
+end
+BCLags(tag,:)=[];
+BC(tag)=[];
 
-%% scale MAP to match mean exactly
-MAP=map_scale(MAP,E(1));
+%% compose intermediate results into final MAPs
+composedMAPs = 0;
+MAPs = cell(1,0);
+subs = cell(1,0);
+FACs = [];
+FBCs = [];
+
+for k=1:length(ind)
+    index = ind(k);
+
+    COMPOSE_VERBOSE=1;
+    [newMAP,newSubMAPs,errorCode]=kpcfit_sub_compose(resE1{index},resSCV{index},resE3{index},resG2{index}, COMPOSE_VERBOSE);
+    if errorCode ~= 0 || isempty(newMAP)
+        fprintf("[%d] Discarded (errorCode=%d).\n", k, errorCode);
+        continue
+    end
+    
+    % Compute value of obj. functions for the resulting MAP
+    tSCV=(E(2)-E(1)^2)/E(1)^2;
+    newfAC=norm((AC-map_acf(newMAP, ACLags)'),1)/norm(AC,2) + (map_scv(newMAP) - tSCV)^2/tSCV^2;
+    BCj=ones(1,size(BCLags,1));
+    for indexL=1:size(BCLags,1)
+        BCj(indexL)=map_joint(newMAP,BCLags(indexL,:),[1,1,1]);
+    end
+    newfBC = norm(BC-BCj,2)/norm(BC,2);
+    
+    % scale MAP to match mean exactly
+    newMAP=map_scale(newMAP,E(1));
+    
+    composedMAPs = composedMAPs + 1;
+
+    MAPs{composedMAPs} = newMAP;
+    FACs(composedMAPs) = newfAC;
+    FBCs(composedMAPs) = newfBC;
+    subs{composedMAPs} = newSubMAPs;
+    
+    if COMPOSE_VERBOSE > 0
+        fprintf(1, "[%d] OK - fac= %f; fbc= %f\n", k, newfAC, newfBC);
+    end
+
+    if composedMAPs == options.MaxRetMAPs
+        break
+    end
+end
+
+
+%%
+if composedMAPs == 0
+    fprintf(2, "+++ KPC FAILED +++\n");
+else
+    bestMAP=MAPs{1};
+    subMAPs=subs{1};
+    fbc=FBCs(1);
+    fac=FACs(1);
+    fprintf(1, "Returned %d MAPs:\n", composedMAPs);
+    fprintf(1, '1) fAC=%f, fBC=%f, SCV=%f, ACF(1)=%f, SKEW=%f\n', ...
+        fac, fbc, map_scv(bestMAP), map_acf(bestMAP,1), map_skew(bestMAP));
+    
+    otherMAPs=cell(1,0);
+    otherFBCs=[];
+    otherFACs=[];
+    otherSubMAPs=cell(1,0);
+    
+    
+    for i=1:composedMAPs-1
+        otherMAPs{end+1} = MAPs{1+i};
+        otherFACs(end+1) = FACs(1+i);
+        otherFBCs(end+1) = FBCs(1+i);
+        otherSubMAPs{end+1} = subs{1+i};
+        fprintf(1, '%d) fAC=%f, fBC=%f, SCV=%f, ACF(1)=%f, SKEW=%f\n', ...
+            i+1, otherFACs(i), otherFBCs(i), map_scv(otherMAPs{i}), ...
+            map_acf(otherMAPs{i},1), map_skew(otherMAPs{i}));
+    end
+    
+    fprintf(1, '\n');
+end
+
 warning on
 end
