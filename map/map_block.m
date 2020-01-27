@@ -48,11 +48,12 @@ D1=[ mu00, mu01;
 
 MAP={D0,D1};
 
-%r3=E3/6
-%r12=E2^2/4/E1
+if any(imag(MAP{1})>10^-4, 'all') || any(imag(MAP{2})>10^-4, 'all') 
+    mu00 = -1; % just to be sure the check below fails
+end
 
 % note: if the third moment is infeasible, ignore the third moment
-if ~issym(mu00) && (mu00<0 || mu11<0 || mu01<0 || mu10<0 )
+if ~issym(mu00) && (mu00<0 || mu11<0 || mu01<0 || mu10<0 || (map_isfeasible(MAP) == 0))
     % if any element in D1 is negative, it indicates that this is an
     % infeasible map, then we will find a map that matches the first and
     % second moment, still fit it with MMPP(2)
@@ -91,12 +92,6 @@ end
 % G2=map_gamma2(MAP);
 % eddy_question: we don't need to return G2, why do we need to compute
 % map_gamma2?
-
-%MAP{1}
-%MAP{2}
-%pause
-
-    
 
     function G2=map_gamma2(MAP)
     % function G2=map_gamma2(MAP)
