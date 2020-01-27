@@ -42,6 +42,17 @@ if sum(isnan(D0(:)))>0
     isfeas=0;
     return
 end
+
+if any(isinf(D0), 'all') || any(isinf(D1), 'all') || any(isnan(D0), 'all') || any(isnan(D1), 'all')
+    isfeas=0;
+    return
+end
+if any(imag(D0)>10^-4, 'all') || any(imag(D1)>10^-4, 'all') 
+    isfeas=0;
+    return
+end
+
+
 P=inv(-D0)*D1;
 Q=D0+D1;
 

@@ -1,4 +1,4 @@
-function [MAP,fac,fbc,kpcMAPs]=kpcfit_auto(trace, varargin)
+function [MAP,fac,fbc,kpcMAPs,otherMAPs, otherFACs, otherFBCs, otherSubMAPs]=kpcfit_auto(trace, varargin)
 % [MAP,fac,fbc,kpcMAPs] = kpcfit_auto(T,'option1',val1,'option2',val2,...)
 %
 % DESCRIPTION
@@ -29,6 +29,8 @@ function [MAP,fac,fbc,kpcMAPs]=kpcfit_auto(trace, varargin)
 % 'MaxResAC'   - maximum number of autocorrelation fitting runs further considered in bicovariance fitting
 % 'ACLags'     - autocorrelation lags to be fitted (e.g., 1:10)
 % 'BCGridLags' - lags defining bicovariance grid to be fitted  (e.g., 1:5 gives a 25 points grid 1:5x1:5)
+% 'MaxRetMaps' - maximum number of MAPs returned
+% 'ParallelBC' - enable parallelization of BC runs
 %
 % REFERENCES
 % [1] G.Casale, E.Z.Zhang, E.Smirni. Trace Data Characterization and Fitting 
@@ -51,9 +53,13 @@ OptionNames = [
     'AnimateAC ';
     'MaxRunsBC ';
     'MaxResAC  ';    
+    'MaxRetMAPs';
+    'ParallelBC';
     ];
 
 OptionTypes = [
+    'numeric';
+    'numeric';
     'numeric';
     'numeric';
     'numeric';
@@ -79,6 +85,8 @@ options.MaxIterBC =  10; % iterate up to 10 times to fit bicorrelations
 options.MaxRunsAC =  50; % maximum number of runs for AC fitting
 options.MaxRunsBC =  30; % maximum number of runs for AC fitting
 options.MaxResAC  =  min([options.MaxRunsAC,10]); % maximum number of values returned for AC fitting
+options.MaxRetMAPs = 1; % maximum number of MAPs returned
+options.ParallelBC = 0; % parallelize BC runs
 
 % Parse Optional Parameters
 options=ParseOptPara(options,OptionNames,OptionTypes,OptionValues,varargin);
@@ -99,7 +107,7 @@ end
 fprintf(1,'init: kpc-toolbox will search for a MAP with 2^%d=%d states\n',options.NumMAPs,2^options.NumMAPs);
 %% fitting
 disp('fitting: running KPC-based fitting script');    
-[MAP,fac,fbc,kpcMAPs]=kpcfit_manual(options.NumMAPs, ...
+[MAP,fac,fbc,kpcMAPs,otherMAPs, otherFACs, otherFBCs, otherSubMAPs]=kpcfit_manual(options.NumMAPs, ...
                             trace.E, ...
                             trace.AC, ...
                             trace.ACLags, ...
@@ -111,7 +119,9 @@ disp('fitting: running KPC-based fitting script');
                             'MaxRunsBC',options.MaxRunsBC, ...
                             'MaxIterBC',options.MaxIterBC, ...
                             'OnlyAC',options.OnlyAC, ...
-                            'AnimateAC',options.AnimateAC);
+                            'AnimateAC',options.AnimateAC, ...
+                            'MaxRetMAPs', options.MaxRetMAPs, ...
+                            'ParallelBC', options.ParallelBC);
 
 %% display final moments and autocorrelations
 disp('** KPC fitting algorithm completed ** ');
