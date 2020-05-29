@@ -25,9 +25,11 @@ if nargin==1
 end
 P=map_embedded(MAP);
 x=map_lambda(MAP)*map_prob(MAP);
-if issym(MAP{1}(1,1))
-    ACFCOEFFS=sym([]);
-    y=inv(-MAP{1})*sym(ones(size(MAP{1},1),1));
+if issym(MAP{1}(1,1))    
+    if ~isdeployed
+        ACFCOEFFS=sym([]);
+        y=inv(-MAP{1})*sym(ones(size(MAP{1},1),1));
+    end
 else
     ACFCOEFFS=([]);
     y=inv(-MAP{1})*ones(size(MAP{1},1),1);

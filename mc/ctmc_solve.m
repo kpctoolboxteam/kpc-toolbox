@@ -27,7 +27,7 @@ end
 
 Q = ctmc_makeinfgen(Q); % so that spurious diagonal elements are set to 0
 n = length(Q);
-if nargout > 2    
+if nargout > 2
     [nConnComp, connComp] = weaklyconncomp(Q+Q');
     if nConnComp > 1
         % reducible generator - fail fast
@@ -93,6 +93,12 @@ if isempty(Qnnz)
 end
 Qnnz(:,end) = 1;
 bnnz(end) = 1;
+
+if ~isdeployed
+    if issym(Q)
+        p = sym(p);
+    end
+end
 
 if exist('options','var')
     switch options.method
