@@ -11,9 +11,6 @@ function [p, Q, nConnComp, connComp]=ctmc_solve(Q,options)
 %  Examples:
 %  - ctmc_solve([-0.5,0.5;0.2,-0.2])
 
-if nargin == 1
-    options = struct('verbose', 1,'method','default'); %
-end
 
 if length(Q) > 6000 && (nargin==1 || ~options.force)
     fprintf(1,'ctmc_solve: the order of Q is greater than 6000, i.e., %d elements. Press key to continue.',length(Q));
@@ -74,7 +71,7 @@ while goon
     nnzel = find(sum(abs(Qnnz),1)~=0 & sum(abs(Qnnz),2)'~=0);
     if length(nnzel) < n && ~isReducible
         isReducible = true;
-        if options.verbose == 2 % debug
+        if (nargin > 1 && options.verbose == 2) % debug
             fprintf(1,'ctmc_solve: the infinitesimal generator is reducible.\n');
         end
     end
@@ -100,7 +97,9 @@ if ~isdeployed
     end
 end
 
-if exist('options','var')
+if nargin == 1
+    p(nnzel)=Qnnz'\ bnnz;
+else
     switch options.method
         case 'gpu'
             try
@@ -116,8 +115,6 @@ if exist('options','var')
         otherwise
             p(nnzel)=Qnnz'\ bnnz;
     end
-else
-    p(nnzel)=Qnnz'\ bnnz;
 end
 
 end
