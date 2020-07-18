@@ -129,6 +129,10 @@ f = f_best;
             f=max(2*fold, 10^6);
             return
         end
+        
+        % scale MAP to match E(1)
+        compMAP=map_scale(compMAP, E(1));
+        
         for indexL=1:size(BCLags,1)
             BCj(indexL)=(map_joint(compMAP,BCLags(indexL,:),[1,1,1]));
         end
