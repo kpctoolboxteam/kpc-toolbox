@@ -102,7 +102,12 @@ disp('** KPC fitting algorithm initialized **');
 % order
 if isempty(options.NumMAPs) % if MAP order not given, use automatic BIC selection
     disp('init: performing order selection');
-    options.NumMAPs = kpcfit_sub_bic(trace.ACFull,[2 4 8 16 32 64 128]);
+    try
+        options.NumMAPs = kpcfit_sub_bic(trace.ACFull,[2 4 8 16 32 64 128]);
+    catch
+        fprintf(2, "BIC order selection failed. Using 3 MAPs\n");
+        options.NumMAPs = 3;
+    end
 end
 fprintf(1,'init: kpc-toolbox will search for a MAP with 2^%d=%d states\n',options.NumMAPs,2^options.NumMAPs);
 %% fitting

@@ -1,5 +1,4 @@
-function [MAP,fac,fbc,subMAPs]=kpcfit_manual(NumMAPs,E,AC,ACLags,BC,BCLags,varargin)
-% [MAP,fac,fbc,subMAPs]=kpcfit_manual(NumMAPs,E,AC,ACLags,BC,BCLags,varargin)
+function [bestMAP,fac,fbc,subMAPs,otherMAPs, otherFACs, otherFBCs, otherSubMAPs]=kpcfit_manual(NumMAPs,E,AC,ACLags,BC,BCLags,varargin)
 %
 % DESCRIPTION
 % Fitting of trace S into a Markovian Arrival Process based on Kronecker
@@ -125,17 +124,11 @@ for k=1:length(ind)
         continue
     end
     
-    % Compute value of obj. functions for the resulting MAP
-    tSCV=(E(2)-E(1)^2)/E(1)^2;
-    newfAC=norm((AC-map_acf(newMAP, ACLags)'),1)/norm(AC,2) + (map_scv(newMAP) - tSCV)^2/tSCV^2;
-    BCj=ones(1,size(BCLags,1));
-    for indexL=1:size(BCLags,1)
-        BCj(indexL)=map_joint(newMAP,BCLags(indexL,:),[1,1,1]);
-    end
-    newfBC = norm(BC-BCj,2)/norm(BC,2);
-    
     % scale MAP to match mean exactly
     newMAP=map_scale(newMAP,E(1));
+    
+    % Compute value of obj. functions for the resulting MAP
+    [newfAC,newfBC]=evaluate_obj_function(newMAP);
     
     composedMAPs = composedMAPs + 1;
 
@@ -184,6 +177,20 @@ else
     
     fprintf(1, '\n');
 end
+
+
+
+    function [objAC,objBC] = evaluate_obj_function (map)
+        tSCV=(E(2)-E(1)^2)/E(1)^2;
+        objAC=norm((AC-map_acf(map, ACLags)'),1)/norm(AC,2) + (map_scv(map) - tSCV)^2/tSCV^2;
+        
+        mapBC=ones(1,size(BCLags,1));
+        for j=1:size(BCLags,1)
+            mapBC(j)=map_joint(map,BCLags(j,:),[1,1,1]);
+        end
+        objBC = norm(BC-mapBC,2)/norm(BC,2);
+    end
+
 
 warning on
 end
