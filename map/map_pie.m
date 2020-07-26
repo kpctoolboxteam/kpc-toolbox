@@ -11,5 +11,5 @@ function PIE=map_pie(MAP)
 %
 
 A=map_prob(MAP)*MAP{2};
-PIE=A/(A*e(length(MAP{2})));
+PIE=A/(A*ones(length(MAP{2}),1));
 end

@@ -8,5 +8,5 @@ for i= 1:n
 end
 M = (C\E(1:n)')'; % determine entry probabilities
 PH{1}=diag(-1./theta);
-PH{2}=-diag(-1./theta)*e(n)*M;
+PH{2}=-diag(-1./theta)*ones(n,1)*M;
 end
