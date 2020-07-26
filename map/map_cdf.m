@@ -16,7 +16,7 @@ function CDFVALS=map_cdf(MAP,POINTS)
 
 CDFVALS=0*POINTS(:)';
 pie = map_pie(MAP);
-e1=e(length(MAP{2}));
+e1=ones(length(MAP{2}),1);
 for t=1:length(POINTS)
     CDFVALS(t)=1-pie*expm(MAP{1}*POINTS(t))*e1;
 end
