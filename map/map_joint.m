@@ -23,11 +23,7 @@ invD0=inv(-MAP{1});
 JM=1;
 K=length(a);
 for k=1:(K-1)
-%    a(k+1)-a(k)
     JM=JM*factorial(i(k))*invD0^(i(k))*(P^(a(k+1)-a(k)));
 end
-%a(K)
 JM=map_pie(MAP)*JM*factorial(i(K))*invD0^(i(K))*ones(length(P),1);
-                            % e is a column vector of ones
-
 end
