@@ -21,9 +21,11 @@ end
 D0=MAP{1};
 D1=MAP{2};
 e=ones(length(D0),1);
-pi=map_prob(MAP);
-x=pi*D1;
-y=e/(pi*D1*e);
+%pi=map_prob(MAP);
+%x=pi*D1;
+%y=e/(pi*D1*e);
+x=map_pie(MAP);
+y=e;
 for t=1:length(ORDERS)
     i=ORDERS(t);
     if isnan(D0)
