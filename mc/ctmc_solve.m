@@ -24,7 +24,6 @@ end
 
 Q = ctmc_makeinfgen(Q); % so that spurious diagonal elements are set to 0
 n = length(Q);
-<<<<<<< HEAD
 %if nargout > 2
 [nConnComp, connComp] = weaklyconncomp(abs(Q+Q'));
 if nConnComp > 1
@@ -35,19 +34,6 @@ if nConnComp > 1
          Qc = ctmc_makeinfgen(Qc);
          p(connComp==c) = ctmc_solve(Qc);
      end
-=======
-
-%if nargout > 2
-[nConnComp, connComp] = weaklyconncomp(Q+Q');
-if nConnComp > 1
-    % reducible generator - solve each component recursively
-    p = nan(1,n);
-    for c=1:nConnComp
-        Qc = Q(connComp==c,connComp==c);
-        Qc = ctmc_makeinfgen(Qc);
-        p(connComp==c) = ctmc_solve(Qc);
-    end
->>>>>>> 1b2be6907fe8dac48c657ea52a4883342608e982
     p = p /sum(p);
     return
 end
