@@ -13,18 +13,21 @@ function MAP=map_normalize(MAP)
 %  - map_normalize({[0,0;0,0],[1,2;3,4]}) produces a valid MAP
 %
 
-for i=1:size(MAP{1},1)
-    for j=1:size(MAP{1},1)
-        MAP{1}(i,j)=real(MAP{1}(i,j));
-        MAP{2}(i,j)=real(MAP{2}(i,j));
+D0=MAP{1};
+D1=MAP{2};
+for i=1:size(D1,1)
+    for j=1:size(D1,1)
+        D0(i,j)=real(D0(i,j));
+        D1(i,j)=real(D1(i,j));
     end
 end
-MAP{1}(find(MAP{1}<0))=0;
-MAP{2}(find(MAP{2}<0))=0;
-for n=1:size(MAP{1},1)
-    MAP{1}(n,n)=0;
+D0(find(D0<0))=0;
+D1(find(D1<0))=0;
+for n=1:size(D0,1)
+    D0(n,n)=0;
     for b=1:length(MAP)
-        MAP{1}(n,n)=MAP{1}(n,n)-sum(MAP{b}(n,:));
+        D0(n,n)=D0(n,n)-sum(MAP{b}(n,:));
     end
 end
+MAP = {D0,D1};
 end
