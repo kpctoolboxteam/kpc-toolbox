@@ -1,5 +1,5 @@
-function MAP = map_normalize(MAP)
-% MAPOUT = map_normalize(MAPIN) - Try to make a MAP feasible
+function MAP=map_normalize(MAP)
+% MAPOUT=map_normalize(MAPIN) - Try to make a MAP feasible
 %
 %  Input:
 %  MAPIN: a MAP in the form of {D0,D1}
@@ -13,17 +13,19 @@ function MAP = map_normalize(MAP)
 %  - map_normalize({[0,0;0,0],[1,2;3,4]}) produces a valid MAP
 %
 
-D0=real(MAP{1});
-D1=real(MAP{2});
-D0 = D0 - diag(diag(D0)); % remove diagonal
-D0(D0<0)=0; % remove invalid entries
-D0 = D0 - diag(sum(D0));
-MAP{1} = D0;
-for b=2:length(MAP) %% D1..Dn
-    Db = MAP{b};
-    Db(Db<0)=0;
-    D0 = D0 - diag(sum(Db,2));
-    MAP{b} = Db;
+for i=1:size(MAP{1},1)
+    for j=1:size(MAP{1},1)
+        MAP{1}(i,j)=real(MAP{1}(i,j));
+        MAP{2}(i,j)=real(MAP{2}(i,j));
+    end
 end
-MAP{1} = D0;
+for b=1:length(MAP)
+    MAP{b}(find(MAP{b}<0))=0;
+end
+for n=1:size(MAP{1},1)
+    MAP{1}(n,n)=0;
+    for b=1:length(MAP)
+        MAP{1}(n,n)=MAP{1}(n,n)-sum(MAP{b}(n,:));
+    end
+end
 end
