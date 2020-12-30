@@ -20,7 +20,7 @@ for i=1:size(MAP{1},1)
     end
 end
 for b=1:length(MAP)
-    MAP{b}(find(MAP{b}<0))=0;
+    MAP{b}(MAP{b}<0)=0;
 end
 for n=1:size(MAP{1},1)
     MAP{1}(n,n)=0;
