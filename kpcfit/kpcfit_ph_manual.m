@@ -21,7 +21,7 @@ function PH = kpcfit_ph_manual(E,varargin)
 % OPTION LIST
 % 'WantHyper'    - boolean, if true returns hyper-exponential distribution
 % 'NumStates'  - integer, number of states of the PH distribution - **must be multiple of 2**, default: 4
-% 'NumPHs'     - integer, equals log2(number of states of the PH distribution), default: 2 (i.e., PH(4))
+% 'NumPHs'     - integer, number of PHs to be composed, default: 2 (i.e., PH(4))
 % 'NumMoms'    - integer, moments considered in the moment matching problem, default: 6
 % 'MaxIterMM'  - integer, maximum number of iterations for a single moment-matching fitting run
 
