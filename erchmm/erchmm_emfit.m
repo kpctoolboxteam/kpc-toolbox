@@ -1,13 +1,14 @@
-function [D0, D1, logL] = map_emfit_erchmm(trace, orders, iter_max, iter_tol, verbose)
+function [MAP, logL] = erchmm_emfit(trace, orders, iter_max, iter_tol, verbose)
 
     %% define the conditions initially that we apply to EM-algorithm. Could put these inside function. 
+    
     if nargin< 3
         iter_max = 300;
     end
     if nargin< 4
         iter_tol = 1e-7; % stop condition on the iterations
     end
-        
+    
     %% If we want to show the progress
     if nargin<5
         verbose = true;
@@ -80,7 +81,9 @@ function [D0, D1, logL] = map_emfit_erchmm(trace, orders, iter_max, iter_tol, ve
                 % Recursive part of EM-Algorithm. Call the function again
                 % to see if new choice of orders is better than the
                 % previous choice. 
-                [ord_X,ord_Y,l] = EM_algorithm_using_ER_CHMM(trace, all_orders{ord_num_2});
+                [ordMAP,l] = erchmm_emfit(trace, all_orders{ord_num_2}, iter_max, iter_tol, verbose);
+                ord_X=ordMAP{1};
+                ord_Y=ordMAP{1};
                 if l > log_li_best
                     X_chosen = ord_X;
                     Y_chosen = ord_Y;
@@ -99,6 +102,7 @@ function [D0, D1, logL] = map_emfit_erchmm(trace, orders, iter_max, iter_tol, ve
             print_erlang_number(orders_best);
             fprintf('\n');
         end
+        MAP = {D0, D1};
         return;
     end
     
@@ -139,7 +143,7 @@ function [D0, D1, logL] = map_emfit_erchmm(trace, orders, iter_max, iter_tol, ve
     steps = 1;
     t1 = clock();
     %% Start of the Main Algorithm
-    while abs((ologli-logL)/logL)>iter_tol && steps<=iter_max
+    while abs((ologli-logL)/logL)>iter_tol && steps<iter_max
         ologli = logL;
         % E-step:
         %% Compute the branch densities:
@@ -237,7 +241,7 @@ function [D0, D1, logL] = map_emfit_erchmm(trace, orders, iter_max, iter_tol, ve
     
     %% Finalize formulation of D0 and D1 matrices
     
-    % Generate the mstrix D0 from lambda and the orders
+    % Generate the matrix D0 from lambda and the orders
     D0 = generate_D0_from_erlangs(lambda, orders);
     % initialize D1 size
     D1 = zeros(size(D0));
@@ -245,5 +249,6 @@ function [D0, D1, logL] = map_emfit_erchmm(trace, orders, iter_max, iter_tol, ve
     indicesTo = [1 cumsum(orders(1:end-1))+1];
     indicesFrom = cumsum(orders);
     % Use diagonal of lambda and the T matrix values
-    D1(indicesFrom,indicesTo) = diag(lambda)*T;
+    D1(indicesFrom,indicesTo) = diag(lambda)*T;    
+    MAP = {D0, D1};
 end
