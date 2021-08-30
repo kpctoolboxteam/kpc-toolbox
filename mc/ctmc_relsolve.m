@@ -40,12 +40,16 @@ end
 
 if nConnComp > 1
     % reducible generator - solve each component recursively
-    p = zeros(1,n);
-     for c=1:nConnComp
-         Qc = Q(connComp==c,connComp==c);
-         Qc = ctmc_makeinfgen(Qc);
-         p(connComp==c) = ctmc_solve(Qc);
-     end
+    if issym(Q)
+        p = sym(zeros(1,n));
+    else
+        p = zeros(1,n);
+    end
+    for c=1:nConnComp
+        Qc = Q(connComp==c,connComp==c);
+        Qc = ctmc_makeinfgen(Qc);
+        p(connComp==c) = ctmc_solve(Qc);
+    end
     p = p /sum(p);
     return
 end
