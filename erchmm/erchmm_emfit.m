@@ -1,5 +1,17 @@
 function [MAP, logL] = erchmm_emfit(trace, orders, iter_max, iter_tol, verbose)
 
+% The procedure that we use is based off the algorithms detailed in the following references: 
+
+% Okamura, H. et al. (2008). An EM algorithm for a Superposition of Markovian Arrival Processes. Department of Information Engineering, Graduate School of Engineering,
+% Hiroshima University, Japan. Accessible at: http://www.kurims.kyoto-u.ac.jp/~kyodo/kokyuroku/contents/pdf/1589-28.pdf.
+
+% Horvath, G. & Okamura, H. (2013). A Fast EM algorithm for Fitting Marked Markov Arrival Processes with a new Special Structure.
+
+% Horvath, G. et al. (2018). Parallel Algorithms for Fitting Markov Arrival Processes. Preprint Submitted to Elsevier.
+
+% This algorithm was inspired and adapted from from the BUTools implementation, accessible at: 
+% http://webspn.hit.bme.hu/~telek/tools/butools/doc/MAPFromTrace.html
+
     %% define the conditions initially that we apply to EM-algorithm. Could put these inside function. 
     
     if nargin< 3
