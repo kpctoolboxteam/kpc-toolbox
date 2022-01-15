@@ -19,6 +19,8 @@ end
 
 if size(Q)==1
     p = 1;
+    nConnComp = 1;
+    connComp = 1:length(Q);
     return
 end
 
