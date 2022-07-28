@@ -6,5 +6,8 @@ function p=map_pi(MAP)
 % Copyright (c) 2012-2018, Imperial College London 
 % All rights reserved.
 
-    p=dtmc_solve(map_embedded(MAP));
+% p=dtmc_solve(map_embedded(MAP)); % this does not work with
+% E1=map_erlang(1,10), the first row becomes perfectly 0 
+
+p = map_pie(MAP);
 end

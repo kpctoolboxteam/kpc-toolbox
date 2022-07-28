@@ -1,5 +1,5 @@
 function MAP=map_mixture(alpha,MAPs)
-% probabilistic composition of MAPs - MAP=map_pcompose(P,MAPs)
+% probabilistic mixture of MAPs - MAP=map_mixture(alpha,MAPs)
 D0 = [];
 D1 = [];
 for i = 1:length(MAPs)
@@ -8,9 +8,9 @@ for i = 1:length(MAPs)
     else
         D0 = blkdiag(D0,MAPs{i}{1});
     end
-    D1i = alpha(1)*MAPs{i}{2}*e(length(MAPs{i}{2}))*map_pie(MAPs{1});
+    D1i = alpha(1)*MAPs{i}{2}*ones(length(MAPs{i}{2}),1)*map_pie(MAPs{1});
     for j=2:length(MAPs)
-        D1i = horzcat(D1i,MAPs{i}{2}*alpha(j)*e(length(MAPs{i}{2}))*map_pie(MAPs{j}));
+        D1i = horzcat(D1i,MAPs{i}{2}*alpha(j)*ones(length(MAPs{i}{2}),1)*map_pie(MAPs{j}));
     end
     D1 = vertcat(D1,D1i);
 end
