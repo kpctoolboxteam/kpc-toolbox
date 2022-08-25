@@ -1,4 +1,4 @@
-function P=ctmc_randomization(Q,q)
+function [P,q]=ctmc_randomization(Q,q)
 if nargin==1
     q=(max(max(abs(Q))))+rand;
 end
