@@ -13,7 +13,7 @@ function [p, Q, nConnComp, connComp]=ctmc_solve(Q,options)
 
 
 if length(Q) > 6000 && (nargin==1 || ~options.force)
-    fprintf(1,'ctmc_solve: the order of Q is greater than 6000, i.e., %d elements. Press key to continue.\n',length(Q));
+    line_warning(mfilename,'The order of Q is greater than 6000, i.e., %d elements. Press key to continue.\n',length(Q));
     pause;
 end
 
@@ -36,6 +36,7 @@ end
 [nConnComp, connComp] = weaklyconncomp(B);
 if nConnComp > 1
     % reducible generator - solve each component recursively
+    line_warning(mfilename,'Reducible generator. No initial vector available, decomposing and solving each component recursively.\n');
     if issym(Q)
         p = sym(zeros(1,n));
     else
@@ -91,7 +92,7 @@ while goon
     if length(nnzel) < n && ~isReducible
         isReducible = true;
         if (nargin > 1 && options.verbose == 2) % debug
-            fprintf(1,'ctmc_solve: the infinitesimal generator is reducible.\n');
+            line_warning(mfilename,'The infinitesimal generator is reducible.\n');
         end
     end
     Qnnz = Qnnz(nnzel, nnzel);
