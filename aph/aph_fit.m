@@ -1,4 +1,4 @@
-function APH = aph_fit(e1,e2,e3,nmax)
+function [APH, isexact] = aph_fit(e1,e2,e3,nmax)
 % APH = aph_fit(e1,e2,e3,nmax) - moment matching of APH(n) distribution
 % nmax = max order (default: 10)
 %
@@ -6,6 +6,7 @@ function APH = aph_fit(e1,e2,e3,nmax)
 % with minimal acyclic phase type distributions, Stochastic Models
 % 21:303-326, 2005.
 
+isexact = true;
 if nargin < 4
     nmax = 10;
 end
@@ -57,8 +58,7 @@ if (n2_feas == false || n3_lbfeas == false || n3_ubfeas == false ) || (n == nmax
     warning('cannot match moment set exactly');
     n2 = (n+1)/n;
     n3 =  2*n2-1;
-    %n3 = 2*n2-1;
-    %n3 = un
+    isexact = false;
 end
 
 % fitting
@@ -105,7 +105,11 @@ elseif n2 > n/(n-1) && n3 > un_1 % case 2 of 2
     elseif K20<0
         f = K13+K15+K17;    
     end    
-    
+%% this input does not seem to find an f
+%e1 = 1
+%e2 = 1.5000
+%e3 = 3.3750
+
     a = 2*(f-1)*(n-1)/((n-1)*(n2*f^2-2*f+2)-n);
     p = (f-1)*a;
     lambda = 1;
@@ -115,6 +119,7 @@ elseif n2 > n/(n-1) && n3 > un_1 % case 2 of 2
     APH = map_scale(map_normalize({T,-T*ones(n,1)*alpha}),e1);
 else
     warning('moment set cannot be matched with an APH distribution');
+    isexact = false;
 end
 
 end
