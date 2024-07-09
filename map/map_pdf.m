@@ -8,7 +8,7 @@ function f=map_pdf(MAP,tset)
 % All rights reserved.
 
 
-pi=map_pi(MAP);
+pi=map_pie(MAP);
 f=[];
 if issym(MAP{1})
     f=sym(f);
