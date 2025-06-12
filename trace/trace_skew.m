@@ -4,9 +4,20 @@ function skew = trace_skew(S)
 % DESCRIPTION
 % Compute the bias-corrected skewness of trace S (equivalent to skewness(S,0))
 
-n = numel(S);
-m = mean(S);
-s = std(S, 1); % population standard deviation
+% Remove NaNs
+S = S(:);
+S = S(~isnan(S));
 
-skew = (n / ((n - 1) * (n - 2))) * sum(((S - m) / s).^3);
+n = numel(S);
+if n < 3
+    skew = NaN;
+    return;
+end
+
+res = S - mean(S, 'omitnan');
+s2 = mean(res.^2, 'omitnan');
+m3 = mean(res.^3, 'omitnan');
+
+% Bias correction
+skew = m3 * (sqrt((n - 1) / n) * n / (n - 2))  / s2^(3/2);
 end
