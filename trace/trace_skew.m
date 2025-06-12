@@ -1,5 +1,5 @@
-function skew = trace_skewness(S)
-% [skew] = trace_skewness(S)
+function skew = trace_skew(S)
+% [skew] = trace_skew(S)
 %
 % DESCRIPTION
 % Compute the bias-corrected skewness of trace S (equivalent to skewness(S,0))
