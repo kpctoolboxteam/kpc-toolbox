@@ -12,12 +12,10 @@ if scv <= 1
     error('SCV must be > 1 for hyperexponential distribution');
 end
 
-% Balanced hyperexponential parameters
 p = 0.5 * (1 + sqrt((scv - 1) / (scv + 1)));
 mu1 = 2 * p / mean_val;
 mu2 = 2 * (1 - p) / mean_val;
 
-% MAP representation {D0, D1}
 D0 = diag([-mu1, -mu2]);
 D1 = [mu1; mu2] * [p, 1-p];
 

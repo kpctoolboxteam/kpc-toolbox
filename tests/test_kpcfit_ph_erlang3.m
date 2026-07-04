@@ -10,7 +10,6 @@ for j = 1:size(PH,1)
     T = PH{j,1}{1}
 end
 
-%%
 E=map_moment(map_erlang(3,3),1:5);
 options = kpcfit_ph_options(E);
 fprintf('\n*******************************************************************************\n');

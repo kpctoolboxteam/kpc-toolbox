@@ -12,7 +12,6 @@ end
 
 pa = zeros(npa,1);
 
-% create service process
 K = length(H);
 ns=1;
 mu=1;
@@ -41,16 +40,12 @@ p0 = dtmc_solve(Gkpc{k});
 for k=2:K
     H{k}=map_scale(H{k},rho);
     alpha{k} = map_pie(H{k});
-    p0 = kron(p0, alpha{k}); %calculating pi_0
+    p0 = kron(p0, alpha{k});
 end
 
 pa(1) = 1-rho;
 
 
-% Decompose F*G as U*S*V (this is not the SVD decomposition but S is still diag and U and V are rectangular)
-% We are using here that the arrival and the services apart from H{1} are
-% PH distributions
-% [U, S, V] = svds(Fkpc{1}*Gkpc{1}, length(H{1}{1}));
 [U, S, V] = svds(Fkpc{1}*Gkpc{1}, rank(Fkpc{1}*Gkpc{1}));
 V=V';
 
@@ -63,7 +58,7 @@ iC = diag(sparse(1)./diag(S));
 
 F = kron(sparse(ARV{2}),speye(ns));
 L = krons(sparse(ARV{1}),S0);
-if sum(sum(abs(L-diag(diag(L))))) < 1e-8 % is diagonal?
+if sum(sum(abs(L-diag(diag(L))))) < 1e-8
     iL = diag(sparse(1)./diag(L));
 else
     iL = inv(L); 
@@ -79,7 +74,7 @@ for i=1:(npa-1)
     u1t = (iCViLU'\u1')';
     u1v = u1t*V;
     u1=u1v*iL;
-    pacur = u0 - u1; % woodbury rank-m update
+    pacur = u0 - u1;
     pa(1+i) = sum(pacur,2);
     palast=pacur;
 end

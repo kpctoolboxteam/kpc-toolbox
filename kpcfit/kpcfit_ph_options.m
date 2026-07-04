@@ -30,8 +30,7 @@ ranges.('MinNumStates') = [2,Inf];
 ranges.('MaxNumStates') = [2,Inf];
 ranges.('MinExactMom') =  [1,length(E)];
 
-% Parse optional parameters
-if mod(length(varargin),2) > 0 % if odd number
+if mod(length(varargin),2) > 0
     error('MATLAB:kpcfit_ph_options:odd_number_of_parameters','Odd number of input parameters, please specify a value after each option.');
 end
 
@@ -39,7 +38,6 @@ for i=1:2:length(varargin)
     options.(varargin{i}) = varargin{i+1};
 end
 
-% Sanity checks
 for i=1:2:length(varargin) 
     if options.(varargin{i}) < ranges.(varargin{i})(1)
         options.(varargin{i}) = ranges.(varargin{i})(1);
@@ -50,18 +48,17 @@ for i=1:2:length(varargin)
     end
 end
 
-if mod(options.('MinNumStates'),2^round(log2(options.('MinNumStates')))) > 0 % is multiple of 2?
+if mod(options.('MinNumStates'),2^round(log2(options.('MinNumStates')))) > 0
     options.('MinNumStates') = 2^ceil(log2(ceil(options.('MinNumStates'))));
     warning('MATLAB:kpcfit_ph_options:not_power_of_two',sprintf('MinNumStates not a multiple of 2, fixed to %d.', options.('MinNumStates')));
 end
 
-if mod(options.('MaxNumStates'),2^round(log2(options.('MaxNumStates')))) > 0 % is multiple of 2?
+if mod(options.('MaxNumStates'),2^round(log2(options.('MaxNumStates')))) > 0
     options.('MaxNumStates') = 2^ceil(log2(ceil(options.('MaxNumStates'))));
     warning('MATLAB:kpcfit_ph_options:not_power_of_two',sprintf('MaxNumStates not a multiple of 2, fixed to %d.', options.('MaxNumStates')));
 end
 
 if 2*options.('MaxNumStates')-1 > length(E)
-    % largest power-of-2 number of states fittable from the supplied moments
     maxFeasible = 2^floor(log2(max(1,floor((length(E)+1)/2))));
     warning('MATLAB:kpcfit_ph_options:insufficient_moments',sprintf('MaxNumStates of %d requires %d moments but only %d supplied; reduced to %d.', options.('MaxNumStates'), 2*options.('MaxNumStates')-1, length(E), maxFeasible));
     options.('MaxNumStates') = maxFeasible;

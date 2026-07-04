@@ -1,22 +1,18 @@
-%% LOAD or create trace to fit
 clear;
 
 load("./data/24.hour.BuildServer.11-28-2007.07-55-PM.trace.csv.filtered.mat"); kpcsample = S(:,3);
-%   load("./data/24Hour_RADIUS.08-28-2007.02-43-PM.csv.filtered.mat"); kpcsample = S(:,3);
 kpcsample=kpcsample/mean(kpcsample);
 
-%% FITTING - kpc toolbox
 options = kpcfit_ph_options(E,'MinNumStates',2,'MaxNumStates',8,'Runs',10);
 
 [PH]=kpcfit_ph_auto(E,options); 
 
 kpcfit_ph_summary
 
-%% calculate CDF
 
 oldmethodsPH = PH;
 
-for k=1:15   %calculate sample moments
+for k=1:15
     E(k) = mean(kpcsample.^k);          
 end
 
@@ -57,7 +53,6 @@ end
 legend(labelsOldMethods,Location='best')
 title('CCDF of trace and fitted PHs')
 
-% plot moments
 
 figure;
 plot(1:length(E),log(E),'o'); hold on;
@@ -69,7 +64,6 @@ end
 legend(labelsOldMethods,Location='best')
 title('Moments of trace and fitted PHs')
 
-% plot CFD
 
 figure;
 trunc = find(F<0.95);

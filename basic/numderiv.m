@@ -7,14 +7,14 @@ function d = numderiv(f, x0, order)
 % Spectrally accurate for entire integrands; repo-native replacement for the
 % numeric-derivative use of the third-party derivest routine.
 
-m = 64;               % samples on the circle (>> order)
-r = 0.5;              % radius
+m = 64;
+r = 0.5;
 jj = (0:m-1)';
 z  = x0 + r*exp(2i*pi*jj/m);
 fz = zeros(m,1);
 for k = 1:m
     fz(k) = f(z(k));
 end
-c = fft(fz)/m;        % c(k+1) ~ F^(k)(x0) * r^k / k!
+c = fft(fz)/m;
 d = real(c(order+1) * factorial(order) / r^order);
 end
