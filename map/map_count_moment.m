@@ -19,21 +19,19 @@ else
 end
 
 if map_issym(MAP) || max(order) > 4
-    % symbolic derivative
     z = sym('z');
     MZ = theta*expm(MAP{1}*t+MAP{2}*exp(z)*t)*e;
     for i = 1:length(order)
         M(i) = subs(diff(MZ,z,order(i)),z,0);
     end
 else
-    % numerical derivative
     for i = 1:length(order)
         M(i) = numderiv(@(z) mgfunc(z), 0, order(i));
     end
 end
 
     function r = mgfunc(z)
-        for j=1:length(z) %derivest passes a vector
+        for j=1:length(z)
             r(j) = theta*expm(MAP{1}*t+MAP{2}*exp(z(j))*t)*e;
         end
     end

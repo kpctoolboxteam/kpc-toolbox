@@ -7,14 +7,11 @@ function G = qbd_gmatrix(A0, A1, A2)
 % for a continuous-time Quasi-Birth-Death process with generator blocks
 % A0 (down), A1 (local), A2 (up), where A0+A1+A2 has zero row sums.
 %
-% Self-contained cyclic reduction [Bini,Meini], used in place of the LINE
-% routine QBD_CR so that the KPC-QBD code carries no external dependency.
+% Cyclic reduction [Bini,Meini].
 
 m = size(A1,1);
 I = eye(m);
 
-% uniformize the continuous-time blocks into an equivalent discrete-time
-% QBD (G is invariant under uniformization)
 if any(diag(A1) < 0)
     lambda = max(-diag(A1));
     A0 = A0/lambda;
@@ -22,7 +19,6 @@ if any(diag(A1) < 0)
     A2 = A2/lambda;
 end
 
-% basic cyclic reduction
 A = A1; B = A2; C = A0; Ahat = A1;
 check = 1; numit = 0; maxit = 50;
 while check > 1e-14 && numit < maxit

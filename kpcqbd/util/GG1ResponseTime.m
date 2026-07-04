@@ -15,21 +15,18 @@ function responseSample = GG1ResponseTime(arrTrace,serviceTrace,sampleSize)
     for i=1:sampleSize
         queueLength = queue.size();
         if(queueLength == 0)
-            % empty queue, jump to next arr
             time = time + timeToNextA;
             queue.add(time);          
 
             timeToNextA = arrTrace(randi(arrLength));
         else
             if(timeToNextA < timeToNextS)
-                % next event is arr
                 time = time + timeToNextA;
                 queue.add(time);
 
                 timeToNextS = timeToNextS - timeToNextA;
                 timeToNextA = arrTrace(randi(arrLength));
             else
-                % next event is dep
                 time = time + timeToNextS;
                 arrivedAt = queue.remove();
 

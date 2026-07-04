@@ -1,9 +1,4 @@
-%% LOAD DATA
-% clear;
-
-% load simulation results
 load('data/simulation_probs_avgtable_buildserver_1e10.mat')
-%% INIT
 
 clear PH;
 clear scores;
@@ -11,21 +6,18 @@ clear PH_L;
 clear kpcfittingtoc;
 
 repetitions = 1;
-probInd = 1; % 1 - 0.25, 2 - 0.5, 3 - 0.75, 4 - 0.9
+probInd = 1;
 noOfPointsForFitting = 20; 
 rho = 0.25;
 
-%K = [2,8,2,8,2,8,2,8,2,8,2,8]; % ph size
-%J = [1,1,2,2,3,3,4,4,5,5,6,6]; % number of PHs
 
-K = [4,5]; % ph size
-J = [3,3]; % number of PHs
+K = [4,5];
+J = [3,3];
 
 
 scores = 10e3*ones(length(K),repetitions);
-ARV = map_hyperexp(1/rho,5); %needs to match simulation ARV
+ARV = map_hyperexp(1/rho,5);
 
-%% FITTING
 
 for k=1:length(K)
     for i=1:repetitions

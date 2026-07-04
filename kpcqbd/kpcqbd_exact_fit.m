@@ -84,7 +84,6 @@ PH{3} = x;
             kpclambda = kpclambda*map_lambda(currphlist{j+1});
         end
 
-%         f=steadyStateError_exact(currphlist,simprobs,rho);
         f=steadyStateError_exact(currphlist,simprobs,rho*kpclambda);
         
     end
