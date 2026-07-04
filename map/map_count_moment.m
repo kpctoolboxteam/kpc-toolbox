@@ -28,7 +28,7 @@ if map_issym(MAP) || max(order) > 4
 else
     % numerical derivative
     for i = 1:length(order)
-        M(i) = derivest(@(z) mgfunc(z), 0, 'deriv', order(i));
+        M(i) = numderiv(@(z) mgfunc(z), 0, order(i));
     end
 end
 
