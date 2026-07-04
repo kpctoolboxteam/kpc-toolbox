@@ -1,0 +1,55 @@
+%% LOAD DATA
+% clear;
+
+% load simulation results
+load('data/simulation_probs_avgtable_buildserver_1e10.mat')
+%% INIT
+
+clear PH;
+clear scores;
+clear PH_L;
+clear kpcfittingtoc;
+
+repetitions = 1;
+probInd = 1; % 1 - 0.25, 2 - 0.5, 3 - 0.75, 4 - 0.9
+noOfPointsForFitting = 20; 
+rho = 0.25;
+
+%K = [2,8,2,8,2,8,2,8,2,8,2,8]; % ph size
+%J = [1,1,2,2,3,3,4,4,5,5,6,6]; % number of PHs
+
+K = [4,5]; % ph size
+J = [3,3]; % number of PHs
+
+
+scores = 10e3*ones(length(K),repetitions);
+ARV = map_hyperexp(1/rho,5); %needs to match simulation ARV
+
+%% FITTING
+
+for k=1:length(K)
+    for i=1:repetitions
+        tic
+        [PHcurr,scoreCurr,eflagcurr,xcurr,PH_Lcurr,x0curr] = kpcqbd_fit(ARV,J(k),K(k),prob{probInd}(1:noOfPointsForFitting));
+        kpcfittingtoc(k,i)=toc;
+        scores(k,i) = scoreCurr;
+        currMinVec = min(scores,[],2);
+        if  scores(k,i) <= currMinVec(k)
+            for j=1:length(PHcurr)
+                PH{k,j} = PHcurr{1,j};
+            end
+            x{k} = xcurr;
+            x0{k} = x0curr;
+            PH_L{k} = PH_Lcurr;
+        end  
+    end
+    
+end
+
+scvs = [];
+for i=1:length(PH_L)
+    for j=1:length(PH_L{i})
+        scvs(i,j) = map_scv(PH_L{i}{j});
+    end
+end
+
