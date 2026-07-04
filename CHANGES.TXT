@@ -1,3 +1,5 @@
+0.4.0 - Jul 2026 - Major release. Toolbox is now fully self-contained, with no external dependencies: QBD and MAP/MAP/1 solvers, hyper-exponential and acyclic-PH fitting, and numerical helpers are all native. Added the KPC-QBD queueing extension (kpcqbd).
+
 0.3.3 - Jan 2020 - Major bug fix to BC routine, method is more accurate now.
 
 0.3.2 - Apr 2015 - Source tree restructured. Migrated to GitHub.

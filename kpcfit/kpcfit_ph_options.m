@@ -61,7 +61,13 @@ if mod(options.('MaxNumStates'),2^round(log2(options.('MaxNumStates')))) > 0 % i
 end
 
 if 2*options.('MaxNumStates')-1 > length(E)
-    error('MATLAB:kpcfit_ph_options:insufficient_moments',sprintf('MaxNumStates of %d requires to supply at least %d moments.', options.('MaxNumStates'),2*options.('MaxNumStates')-1));
+    % largest power-of-2 number of states fittable from the supplied moments
+    maxFeasible = 2^floor(log2(max(1,floor((length(E)+1)/2))));
+    warning('MATLAB:kpcfit_ph_options:insufficient_moments',sprintf('MaxNumStates of %d requires %d moments but only %d supplied; reduced to %d.', options.('MaxNumStates'), 2*options.('MaxNumStates')-1, length(E), maxFeasible));
+    options.('MaxNumStates') = maxFeasible;
+    if options.('MinNumStates') > maxFeasible
+        options.('MinNumStates') = maxFeasible;
+    end
 end
 
 if options.('MinNumStates') > options.('MaxNumStates')
