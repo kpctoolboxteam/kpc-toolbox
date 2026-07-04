@@ -167,6 +167,8 @@ nExactResults = size(PH_EXACT,1);
 nApproxMS = size(PH_APX_MS,1);
 %nApproxPS = size(PH_APX_PS,1);
 
+PH = {}; % ensure an output is always returned, even when no PH is found
+
 for j = 1:size(PH_EXACT,1)
     PH{j,1} = map_scale(PH_EXACT{j},Eunscaled(1));
     PH{j,2} = dist_fun(E,map_moment(PH_EXACT{j},1:length(E)));
