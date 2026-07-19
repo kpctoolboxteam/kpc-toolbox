@@ -10,8 +10,8 @@ function [GAMMA, RHO0, RESIDUALS] = map_gamma(MAP, limit)
 
 if nargin < 2
     limit = 1000;
-    lag = 1:(limit/10):limit;    
 end
+lag = 1:(limit/10):limit;
 
 if length(limit) ~= 1
 	error('Invalid parameter'); 

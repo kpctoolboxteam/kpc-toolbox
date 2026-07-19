@@ -15,7 +15,7 @@ end
 
 if E2<=2*E1^2
     warning('E2 failure (SCV=1), setting SCV=1.001');
-    E2=(1+kpcfit_tol)*E1^2;
+    E2=(2+kpcfit_tol)*E1^2;
 end
 if E3<=(3/2)*E2^2/E1
     warning('E3 failure, setting E3=(3/2+1e-6)*E2^2/E1');
