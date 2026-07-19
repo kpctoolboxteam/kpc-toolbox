@@ -12,6 +12,6 @@ function [alpha,T,PHR]=map2ph(MAPIN)
 PHR=MAPIN;
 T=MAPIN{1};
 alpha=dtmc_solve(-inv(MAPIN{1})*MAPIN{2});
-PHR{2}=MAPIN{2}*ones((length(MAPIN{2})),1)*pi;
+PHR{2}=MAPIN{2}*ones((length(MAPIN{2})),1)*alpha;
 end
 
