@@ -1,7 +1,11 @@
 # KPC-Toolbox
 KPC-Toolbox: MATLAB toolbox to fit Markovian Arrival Processes
 
-Current version: 0.4.0
+Current version: 0.5.0
+
+The toolbox is now dual-language: the reference MATLAB implementation lives in
+`matlab/`, and a standalone Python package lives in `python/` (see
+`python/README.md`).
 
 Website: http://www.cs.wm.edu/MAPQN/kpctoolbox.html
 

@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kpc-toolbox"
+version = "0.5.0"
+description = "KPC-Toolbox: fitting Markovian Arrival Processes (MAPs) and phase-type distributions to empirical traces via Kronecker Product Composition. Python edition."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE.TXT" }
+authors = [
+    { name = "Giuliano Casale" },
+    { name = "Julianna Bor" },
+    { name = "Evgenia Smirni" },
+]
+keywords = [
+    "MAP",
+    "Markovian arrival process",
+    "phase-type distribution",
+    "trace fitting",
+    "queueing",
+    "KPC",
+    "Kronecker product composition",
+]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
+dependencies = [
+    "line-solver>=3.0.7",
+    "numpy>=1.23",
+    "scipy>=1.9",
+]
+
+[project.urls]
+Homepage = "http://www.cs.wm.edu/MAPQN/kpctoolbox.html"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["kpctoolbox*"]
+
+[tool.setuptools.package-data]
+"kpctoolbox" = ["data/*.npz", "data/*.mat"]
