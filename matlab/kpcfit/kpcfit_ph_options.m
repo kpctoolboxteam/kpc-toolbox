@@ -70,8 +70,8 @@ end
 if options.('MinNumStates') > options.('MaxNumStates')
     warning('MATLAB:kpcfit_ph_options:max_lt_min','MaxNumStates < MinNumStates, fixed.');
     tmp = options.('MinNumStates');
-    options.('MaxNumStates') = tmp;
     options.('MinNumStates') = options.('MaxNumStates');
+    options.('MaxNumStates') = tmp;
 end
 
 end

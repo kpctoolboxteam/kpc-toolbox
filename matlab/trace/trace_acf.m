@@ -16,22 +16,14 @@ if max(lags)>length(S)-2
     lags(lags == length(S)-2) = [];
 end
 
-if exist('xcorr')
-    rho=xcorr(S-mean(S),max(lags),'coeff');
-    rho=rho((max(lags)+2):end);
-    rho=rho(lags);
-else
-    %warning('trace_acf: signal processing toolbox not found, autocorrelation estimation may be slower than usual.');
-    S=S(:);
-    acv = autocov(S-mean(S));
-    rho=acv(1+lags)'/acv(1);
-%     E1=mean(S);
-%     E2=mean(S.^2);
-%     rho = zeros(1,length(lags));
-%     for ki=1:length(lags)
-%         rho(ki)=(trace_joint(S,[0,lags(ki)],[1,1])-E1^2)/(E2-E1^2);
-%     end
-end
+% Always estimate through autocov(), the unbiased 1/(N-k) estimator. The
+% Signal Processing Toolbox xcorr(...,'coeff') path that used to be taken
+% whenever xcorr was on the path is the biased 1/N estimator, so the two
+% disagreed by O(k/N) and the answer depended on which toolboxes happened to
+% be installed.
+S=S(:);
+acv = autocov(S-mean(S));
+rho=acv(1+lags)'/acv(1);
 
 rho=rho(:);
 

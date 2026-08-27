@@ -18,8 +18,8 @@ end
 for k=kset
     if nargin<3
         support=length(S)-k-1;
-        Sk=zeros(1,length(S)-k);
-        for t=1:(length(S)-k-1)
+        Sk=zeros(1,support);
+        for t=1:support
             Sk(t)=sum(S(t:(t+k-1))); % for all subsets of length k
         end
         IDIk(end+1)=k*var(Sk)/mean(Sk)^2;
@@ -27,9 +27,10 @@ for k=kset
         % data is already aggregated
         % S is a sample of S=X1+...X_n
         keff=floor(k/n);
-        Sk=zeros(1,length(S)-keff);
+        valid=length(S)-keff-1;
+        Sk=zeros(1,valid);
         support=length(S)/(keff);
-        for t=1:(length(S)-keff-1)
+        for t=1:valid
             Sk(t)=sum(S(t:(t+keff-1))); % for all subsets of length k
         end
         IDIk(end+1)=k*var(Sk)/mean(Sk)^2;
@@ -56,7 +57,11 @@ for k=kset
                 Sk(i)=sum(S(indexes(i,1):indexes(i,2)));
             end
         end
-        IDIk(end+1)=k*var(Sk)/mean(Sk)^2;
+        if length(Sk)>1
+            IDIk(end+1)=k*var(Sk)/mean(Sk)^2;
+        else
+            IDIk(end+1)=NaN;
+        end
     end
 end
 end
