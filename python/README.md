@@ -29,13 +29,14 @@ import kpctoolbox as k
 D0, D1 = k.map_hyperexp(1.0, 8.0, 0.6)          # a hyper-exponential, SCV=8
 E = [float(k.map_moment(D0, D1, i)) for i in (1, 2, 3)]
 options = k.kpcfit_ph_options(np.array(E))
-PH = k.kpcfit_ph_auto(np.array(E), options)      # list of fitted PH (D0, D1)
+fits = k.kpcfit_ph_auto(np.array(E), options)    # (PH, distance, params, method)
+PH = fits[0][0]                                  # best fit, as (D0, D1)
 
 # --- MAP fitting: fit autocorrelation of a trace ---
 from kpctoolbox import demo
 S = demo.load_trace("BCAUG89")                   # interarrival-time samples
 trace = k.kpcfit_init(S)
-MAP = k.kpcfit_auto(trace, OnlyAC=True)          # fitted MAP {D0, D1}
+MAP = k.kpcfit_auto(trace, OnlyAC=True)[0]       # best fit, as (D0, D1)
 ```
 
 ## What's here
