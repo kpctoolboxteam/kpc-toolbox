@@ -24,7 +24,7 @@ Elsevier Performance Evaluation, 67(9):873-896, Sep 2010.
 Trace Data Characterization and Fitting for Markov Modeling
 Elsevier Performance Evaluation, 67(2):61-79, Feb 2010.
 
-GETTING STARTED (MATLAB)
+## GETTING STARTED (MATLAB)
 
 Add all directories to the MATLAB classpath, for example using the command:
 
@@ -50,7 +50,7 @@ For the phase-type distribution fitting tool, type
 help kpcfit_ph_auto
 ```
 
-GETTING STARTED (PYTHON)
+## GETTING STARTED (PYTHON)
 
 Install the package from PyPI, which also brings in line-solver, numpy and scipy:
 
