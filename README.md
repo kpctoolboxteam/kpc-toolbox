@@ -1,5 +1,5 @@
 # KPC-Toolbox
-KPC-Toolbox: MATLAB toolbox to fit Markovian Arrival Processes
+KPC-Toolbox: MATLAB and Python toolbox to fit Markovian Arrival Processes
 
 Current version: 0.5.0
 
